@@ -1,0 +1,35 @@
+name: Build and Push Flatpak
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+
+permissions:
+  contents: write # Required to push the built repo back to the branch
+
+jobs:
+  flatpak-build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build Flatpak
+      uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+      with:
+        bundle: linz-qgis.flatpak 
+        manifest-path: nz.govt.linz.qgis.json
+        repository-name: flathub   
+        repository-url: https://dl.flathub.org/repo/
+        cache-key: flatpak-builder-${{ github.sha }} 
+
+    - name: Upload Bundle Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-bundle
+        path: linz-qgis.flatpak
