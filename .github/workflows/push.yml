@@ -17,14 +17,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Flatpak
-        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+      - name: Cache Flatpak dependencies
+        uses: actions/cache@v4
         with:
-          bundle: linz-qgis.flatpak
-          manifest-path: nz.govt.linz.qgis.json
-          repository-name: flathub
-          repository-url: https://dl.flathub.org/repo/
-          cache-key: flatpak-builder-${{ github.sha }}
+          path: .flatpak-builder
+          key: flatpak-builder-${{ hashFiles('nz.govt.linz.qgis.json') }}
+          restore-keys: |
+            flatpak-builder-
+
+      - name: Build Flatpak
+        run: |
+          mkdir -p repo
+
+          flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
+
+          flatpak-builder --user --install-deps-from=flathub --repo=repo --force-clean build-dir nz.govt.linz.qgis.json
+
+      - name: Create Bundle
+        run: |
+          flatpak build-bundle repo linz-qgis.flatpak nz.govt.linz.qgis
 
       - name: Upload Bundle Artifact
         uses: actions/upload-artifact@v4
