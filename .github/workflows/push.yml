@@ -27,15 +27,9 @@ jobs:
 
       - name: Build Flatpak
         run: |
-          # Force a DBUS machine-id to avoid flatpak build failures
-          mkdir -p /var/lib/dbus
-          dbus-uuidgen > /var/lib/dbus/machine-id
-
-          mkdir -p repo
-
           flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
 
-          flatpak-builder --user --install-deps-from=flathub --repo=repo --force-clean build-dir nz.govt.linz.qgis.json
+          dbus-run-session flatpak-builder --user --install-deps-from=flathub --repo=repo --force-clean build-dir nz.govt.linz.qgis.json
 
       - name: Create Bundle
         run: |
