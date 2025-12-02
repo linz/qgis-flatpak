@@ -1,7 +1,7 @@
 name: Build and Push Flatpak
 
 on:
-  push:
+  pull_request:
 
 permissions:
   contents: write # Required to push the built repo back to the branch
