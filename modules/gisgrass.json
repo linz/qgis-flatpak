@@ -15,6 +15,7 @@
         "--with-geos",
         "--with-sqlite=yes",
         "--with-python=yes",
+        "--with-pdal=no",
         "--with-postgres"
     ],
     "sources": [
