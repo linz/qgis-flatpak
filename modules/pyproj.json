@@ -1,0 +1,19 @@
+{
+    "name": "pyproj",
+    "buildsystem": "simple",
+    "build-commands": [
+        "python3 setup.py build",
+        "python3 setup.py install --prefix=/app --root=/ --optimize=1"
+    ],
+    "sources": [
+        {
+            "type": "git",
+            "url": "https://github.com/pyproj4/pyproj.git",
+            "tag": "3.7.2",
+            "x-checker-data": {
+                "type": "git"
+            },
+            "commit": "f16037d2c45c3274ef28b828998267c3390393c8"
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "name": "gisgrass",
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "/share/man",
+        "/lib/*.la"
+    ],
+    "config-opts": [
+        "--prefix=/app",
+        "--with-freetype-includes=/usr/include/freetype2",
+        "--with-readline",
+        "--with-pthread",
+        "--with-nls",
+        "--with-geos",
+        "--with-sqlite=yes",
+        "--with-python=yes",
+        "--with-postgres"
+    ],
+    "sources": [
+        {
+            "type": "git",
+            "url": "https://github.com/OSGeo/grass.git",
+            "tag": "8.4.1",
+            "x-checker-data": {
+                "type": "git",
+                "tag-pattern": "^([0-9.]+)$"
+            },
+            "commit": "45ca3179ab0c450329d5ea410fce1b47b6bffbc8"
+        }
+    ],
+    "modules": [
+        "shared-modules/glu/glu-9.json"
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "name": "exiv2",
+    "cleanup": [
+        "/bin"
+    ],
+    "buildsystem": "cmake-ninja",
+    "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DEXIV2_BUILD_EXIV2_COMMAND=OFF",
+        "-DEXIV2_BUILD_SAMPLES=OFF",
+        "-DEXIV2_ENABLE_INIH=OFF"
+    ],
+    "sources": [
+        {
+            "type": "git",
+            "url": "https://github.com/Exiv2/exiv2.git",
+            "tag": "v0.28.7",
+            "x-checker-data": {
+                "type": "git"
+            },
+            "commit": "afcb7a8ba84a7de36d2f1ee7689394e078697956"
+        }
+    ]
+}

@@ -1,0 +1,159 @@
+{
+    "name": "python-owslib",
+    "buildsystem": "simple",
+    "build-commands": [
+        "pip3 install --prefix=/app *dateutil-*",
+        "pip3 install --prefix=/app pytz-*",
+        "pip3 install --prefix=/app pathspec-*",
+        "pip3 install --prefix=/app editables-*",
+        "pip3 install --prefix=/app pluggy-*",
+        "pip3 install --prefix=/app trove_classifiers-*",
+        "pip3 install --prefix=/app hatchling-*",
+        "pip3 install --prefix=/app urllib3-*",
+        "pip3 install --prefix=/app idna-*",
+        "pip3 install --prefix=/app --no-build-isolation certifi-*",
+        "pip3 install --prefix=/app charset_normalizer-*",
+        "pip3 install --prefix=/app requests-*",
+        "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"lxml\" --no-build-isolation",
+        "pip3 install --prefix=/app owslib*"
+    ],
+    "sources": [
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+            "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "python-dateutil",
+                "packagetype": "bdist_wheel"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/f8/bf/abbd3cdfb8fbc7fb3d4d38d320f2441b1e7cbe29be4f23797b4a2b5d8aac/pytz-2025.2.tar.gz",
+            "sha256": "360b9e3dbb49a209c21ad61809c7fb453643e048b38924c765813546746e81c3",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "pytz"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/dc/67/960ebe6bf230a96cda2e0abcf73af550ec4f090005363542f0765df162e0/certifi-2025.8.3.tar.gz",
+            "sha256": "e564105f78ded564e3ae7c923924435e1daa7463faeab5bb932bc53ffae63407",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "certifi"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/76/c6/c88e154df9c4e1a2a66ccf0005a88dfb2650c1dffb6f5ce603dfbd452ce3/idna-3.10-py3-none-any.whl",
+            "sha256": "946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "idna",
+                "packagetype": "bdist_wheel"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/8a/1f/f041989e93b001bc4e44bb1669ccdcf54d3f00e628229a85b08d330615c5/charset_normalizer-3.4.3-py3-none-any.whl",
+            "sha256": "ce571ab16d890d23b5c278547ba694193a45011ff86a9162a71307ed9f86759a",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "charset-normalizer",
+                "packagetype": "bdist_wheel"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/6b/be/0f2f4a5e8adc114a02b63d92bf8edbfa24db6fc602fca83c885af2479e0e/editables-0.5-py3-none-any.whl",
+            "sha256": "61e5ffa82629e0d8bfe09bc44a07db3c1ab8ed1ce78a6980732870f19b5e7d4c",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "editables",
+                "packagetype": "bdist_wheel"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/54/20/4d324d65cc6d9205fabedc306948156824eb9f0ee1633355a8f7ec5c66bf/pluggy-1.6.0-py3-none-any.whl",
+            "sha256": "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "pluggy",
+                "packagetype": "bdist_wheel"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/e1/85/a4ff8758c66f1fc32aa5e9a145908394bf9cf1c79ffd1113cfdeb77e74e4/trove_classifiers-2025.9.11.17-py3-none-any.whl",
+            "sha256": "5d392f2d244deb1866556457d6f3516792124a23d1c3a463a2e8668a5d1c15dd",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "trove-classifiers",
+                "packagetype": "bdist_wheel"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/08/e7/ae38d7a6dfba0533684e0b2136817d667588ae3ec984c1a4e5df5eb88482/hatchling-1.27.0-py3-none-any.whl",
+            "sha256": "d3a2f3567c4f926ea39849cdf924c7e99e6686c9c8e288ae1037c8fa2a5d937b",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "hatchling",
+                "packagetype": "bdist_wheel"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/cc/20/ff623b09d963f88bfde16306a54e12ee5ea43e9b597108672ff3a408aad6/pathspec-0.12.1-py3-none-any.whl",
+            "sha256": "a0d503e138a4c123b27490a4f7beda6a01c6f288df0e4a8b79c7eb0dc7b4cc08",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "pathspec",
+                "packagetype": "bdist_wheel"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/a7/c2/fe1e52489ae3122415c51f387e221dd0773709bad6c6cdaa599e8a2c5185/urllib3-2.5.0-py3-none-any.whl",
+            "sha256": "e6b01673c0fa6a13e374b50871808eb3bf7046c4b125b216f6bf1cc604cff0dc",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "urllib3",
+                "packagetype": "bdist_wheel"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/1e/db/4254e3eabe8020b458f1a747140d32277ec7a271daf1d235b70dc0b4e6e3/requests-2.32.5-py3-none-any.whl",
+            "sha256": "2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "requests",
+                "packagetype": "bdist_wheel"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/aa/88/262177de60548e5a2bfc46ad28232c9e9cbde697bd94132aeb80364675cb/lxml-6.0.2.tar.gz",
+            "sha256": "cd79f3367bd74b317dda655dc8fcfa304d9eb6e4fb06b7168c5cf27f96e0cd62",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "lxml"
+            }
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/0d/4a/295df99278ec1c4f164baa9340ee58d5b2f637e60c23e4dae4cd945713b7/owslib-0.34.1.tar.gz",
+            "sha256": "9c46d59dc03c753912fc3ef3136dbc843dad7572feb1af2cdf0fc5d1a0959028",
+            "dest-filename": "owslib.tar.gz",
+            "x-checker-data": {
+                "type": "pypi",
+                "name": "OWSLib"
+            }
+        }
+    ]
+}

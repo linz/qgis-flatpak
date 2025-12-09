@@ -1,0 +1,19 @@
+{
+    "name": "python-psycopg2",
+    "buildsystem": "simple",
+    "build-commands": [
+        "python3 setup.py build",
+        "python3 setup.py install --prefix=/app --root=/ --optimize=1"
+    ],
+    "sources": [
+        {
+            "type": "git",
+            "url": "https://github.com/psycopg/psycopg2.git",
+            "tag": "2.9.10",
+            "x-checker-data": {
+                "type": "git"
+            },
+            "commit": "a805acf59f402f554e95624b5e27518169ca7715"
+        }
+    ]
+}

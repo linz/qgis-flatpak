@@ -1,0 +1,19 @@
+{
+    "name": "proj",
+    "buildsystem": "cmake-ninja",
+    "config-opts": [
+        "-DBUILD_TESTING=OFF"
+    ],
+    "sources": [
+        {
+            "type": "git",
+            "url": "https://github.com/OSGeo/PROJ.git",
+            "tag": "9.7.0",
+            "x-checker-data": {
+                "type": "git",
+                "tag-pattern": "^([0-9.]+)$"
+            },
+            "commit": "b24cdfa5ecdcc26bf730a2d5a40fbaaf4e9bcc91"
+        }
+    ]
+}

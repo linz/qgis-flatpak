@@ -1,0 +1,19 @@
+{
+    "name": "python-setuptools",
+    "buildsystem": "simple",
+    "build-commands": [
+        "python3 setup.py build",
+        "python3 setup.py install --prefix=/app --root=/ --optimize=1"
+    ],
+    "sources": [
+        {
+            "type": "git",
+            "url": "https://github.com/pypa/setuptools.git",
+            "tag": "v80.9.0",
+            "x-checker-data": {
+                "type": "git"
+            },
+            "commit": "9c4d383631d3951fcae0afd73b5d08ff5a262976"
+        }
+    ]
+}

@@ -21,7 +21,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .flatpak-builder
-          key: flatpak-builder-${{ hashFiles('nz.govt.linz.qgis.json') }}
+          key: flatpak-builder-${{ hashFiles('nz.govt.linz.qgis.json', 'modules/*.json') }}
           restore-keys: |
             flatpak-builder-
 

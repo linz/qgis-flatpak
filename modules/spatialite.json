@@ -1,0 +1,89 @@
+{
+    "name": "spatialite",
+    "config-opts": [
+        "prefix=/app",
+        "--enable-libxml2"
+    ],
+    "rm-configure": true,
+    "sources": [
+        {
+            "type": "archive",
+            "url": "http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-5.1.0.tar.gz",
+            "sha256": "43be2dd349daffe016dd1400c5d11285828c22fea35ca5109f21f3ed50605080",
+            "x-checker-data": {
+                "type": "anitya",
+                "project-id": 1723,
+                "stable-only": true,
+                "url-template": "http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-$version.tar.gz"
+            }
+        },
+        {
+            "type": "script",
+            "dest-filename": "autogen.sh",
+            "commands": [
+                "autoreconf -vfi"
+            ]
+        }
+    ],
+    "modules": [
+        {
+            "name": "freexl",
+            "rm-configure": true,
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://www.gaia-gis.it/gaia-sins/freexl-sources/freexl-2.0.0.tar.gz",
+                    "sha256": "176705f1de58ab7c1eebbf5c6de46ab76fcd8b856508dbd28f5648f7c6e1a7f0",
+                    "x-checker-data": {
+                        "type": "anitya",
+                        "project-id": 855,
+                        "stable-only": true,
+                        "url-template": "http://www.gaia-gis.it/gaia-sins/freexl-sources/freexl-$version.tar.gz"
+                    }
+                },
+                {
+                    "type": "script",
+                    "dest-filename": "autogen.sh",
+                    "commands": [
+                        "AUTOMAKE=\"automake --foreign\" autoreconf -vfi"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "rttopo",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://git.osgeo.org/gitea/rttopo/librttopo.git",
+                    "tag": "librttopo-1.1.0",
+                    "commit": "98a8bdd0b2d13f6b685d0658b4bce15d46606a1a",
+                    "x-checker-data": {
+                        "type": "git",
+                        "tag-pattern": "^librttopo-([0-9.]+)$"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "sqlite3",
+            "buildsystem": "simple",
+            "build-commands": [
+                "CFLAGS='-O2 -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_DBSTAT_VTAB -DSQLITE_ENABLE_ICU' CPPFLAGS=`icu-config --cppflags` LDFLAGS=`icu-config --ldflags` ./configure --disable-static --enable-rtree --prefix=/app && make && make install"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://www.sqlite.org/2025/sqlite-autoconf-3500400.tar.gz",
+                    "sha256": "a3db587a1b92ee5ddac2f66b3edb41b26f9c867275782d46c3a088977d6a5b18",
+                    "x-checker-data": {
+                        "type": "anitya",
+                        "project-id": 4877,
+                        "stable-only": true,
+                        "url-template": "https://www.sqlite.org/2025/sqlite-autoconf-${major}${minor}0${patch}00.tar.gz"
+                    }
+                }
+            ]
+        }
+    ]
+}
