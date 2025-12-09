@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   flatpak-build:
-    runs-on: [self-hosted, ubuntu-codebuild-xlarge]
+    runs-on: ubuntu-latest_16core
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
       options: --privileged
