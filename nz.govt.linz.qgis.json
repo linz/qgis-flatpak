@@ -42,7 +42,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/qgis/qgis.git",
-                    "commit": "e2185f6114297b843e7ab67afa292312da13bcb5"
+                    "commit": "dff0d70259e2b47e90087ce8f7ba69d9d100d7e0"
                 }
             ],
             "config-opts": [
