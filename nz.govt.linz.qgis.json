@@ -45,7 +45,6 @@
         "modules/unixodbc.json",
         "modules/zstd.json",
         "modules/gdal.json",
-        "modules/pdal.json",
         "modules/qca.json",
         "modules/qwt.json",
         "modules/libzip.json",
@@ -85,7 +84,7 @@
                 "-DSQLITE3_LIBRARY=/app/lib/libsqlite3.so",
                 "-DUSE_OPENCL=ON",
                 "-DWITH_QUICK=ON",
-                "-DWITH_PDAL=TRUE",
+                "-DWITH_PDAL=FALSE",
                 "-DWITH_QTWEBKIT=FALSE",
                 "-DSIP_BUILD_EXTRA_OPTIONS=--target-dir=/app/lib/python3.12/site-packages"
             ],
