@@ -2,6 +2,8 @@ name: Build and Push Flatpak
 
 on:
   push:
+    branches: 
+      - master
 
 permissions:
   contents: write # Required to push the built repo back to the branch
@@ -21,9 +23,19 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .flatpak-builder
-          key: flatpak-builder-${{ hashFiles('nz.govt.linz.qgis.json', 'modules/*.json') }}
+          key: flatpak-builder-${{ hashFiles('modules/*.json') }}
           restore-keys: |
             flatpak-builder-
+
+      - name: Bundle info
+        run: |
+          QGIS_COMMIT=$(jq -r '.modules[] | select(objects | .name == "qgis") | .sources[0].commit' nz.govt.linz.qgis.json)
+          SHORT_QGIS=${QGIS_COMMIT:0:6}
+          CURRENT_COMMIT=$(git rev-parse --short=6 HEAD)
+          BUILD_ID=${{github.run_number}}
+          ID="linz-qgis_${SHORT_QGIS}-${CURRENT_COMMIT}_build-${BUILD_ID}"
+          echo "build_id=${ID}" >> $GITHUB_OUTPUT
+        id: bundle_info
 
       - name: Setup Flathub Remote
         run: |
@@ -75,17 +87,27 @@ jobs:
 
       - name: Create Bundle
         run: |
-          QGIS_COMMIT=$(jq -r '.modules[] | select(.name == "qgis") | .sources[0].commit' nz.govt.linz.qgis.json)
-          flatpak build-bundle repo linz-qgis_${QGIS_COMMIT}.flatpak nz.govt.linz.qgis
-
-      - name: Upload Bundle Artifact
-        run: |
-          QGIS_COMMIT=$(jq -r '.modules[] | select(objects | .name == "qgis") | .sources[0].commit' nz.govt.linz.qgis.json)
-          echo "artifact_name=linz-qgis_${QGIS_COMMIT}" >> $GITHUB_OUTPUT
-        id: bundle_info
+          flatpak build-bundle repo ${BUILD_NAME}.flatpak nz.govt.linz.qgis
+        env:
+          BUILD_NAME: ${{ steps.bundle_info.outputs.build_id }}
 
       - name: Upload Bundle
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.bundle_info.outputs.artifact_name }}
-          path: linz-qgis_*.flatpak
+          name: ${{ steps.bundle_info.outputs.build_id }}
+          path: ${{ steps.bundle_info.outputs.build_id }}.flatpak
+
+
+      - name: Generate Release Tag
+        id: tag
+        run: |
+          echo "release_tag=$(date +'%Y-%m-%d')-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ steps.tag.outputs.release_tag }} \
+            --title "Release ${{ steps.tag.outputs.release_tag }}" \
+            --generate-notes \
+            ${{ steps.bundle_info.outputs.build_id }}.flatpak
