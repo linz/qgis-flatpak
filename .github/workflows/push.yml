@@ -2,7 +2,7 @@ name: Build and Push Flatpak
 
 on:
   push:
-    branches: 
+    branches:
       - master
 
 permissions:
@@ -18,6 +18,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Fix Git Trust
+        run: git config --global --add safe.directory '/__w/qgis-flatpak/*'
 
       - name: Cache Flatpak dependencies
         uses: actions/cache@v4
@@ -96,7 +99,6 @@ jobs:
         with:
           name: ${{ steps.bundle_info.outputs.build_id }}
           path: ${{ steps.bundle_info.outputs.build_id }}.flatpak
-
 
       - name: Generate Release Tag
         id: tag
