@@ -46,47 +46,48 @@ jobs:
 
       - name: Install Build Dependencies
         run: |
-          dbus-run-session flatpak-builder --disable-rofiles-fuse --user --install-deps-from=flathub --install-deps-only --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+          rm -rf build-dir
+          dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --install-deps-from=flathub --install-deps-only --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Download Sources
         run: |
-          flatpak-builder --download-only --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --force-clean --download-only --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Build Group 1 - Foundation Libraries
         run: |
-          flatpak-builder --disable-rofiles-fuse --user --stop-at=spatialite --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=spatialite --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Build Group 2 - Database & Storage
         run: |
-          flatpak-builder --disable-rofiles-fuse --user --stop-at=gdal --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --disable-rofiles-fuse --user --stop-at=gdal --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Build Group 3 - Qt Libraries
         run: |
-          flatpak-builder --disable-rofiles-fuse --user --stop-at=qscintilla --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --disable-rofiles-fuse --user --stop-at=qscintilla --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Build Group 4 - Python Core
         run: |
-          flatpak-builder --disable-rofiles-fuse --user --stop-at=python-setuptools --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --disable-rofiles-fuse --user --stop-at=python-setuptools --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Build Group 5 - Python Geospatial
         run: |
-          flatpak-builder --disable-rofiles-fuse --user --stop-at=python-psycopg2 --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --disable-rofiles-fuse --user --stop-at=python-psycopg2 --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Build Group 6 - GRASS GIS
         run: |
-          flatpak-builder --disable-rofiles-fuse --user --stop-at=gisgrass --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --disable-rofiles-fuse --user --stop-at=gisgrass --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Build Group 7 - Python Templates & Additional
         run: |
-          flatpak-builder --disable-rofiles-fuse --user --stop-at=Draco --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --disable-rofiles-fuse --user --stop-at=Draco --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Build Group 8 - QGIS Main
         run: |
-          flatpak-builder --disable-rofiles-fuse --user --stop-at=env-python --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --disable-rofiles-fuse --user --stop-at=env-python --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Finalize Build
         run: |
-          flatpak-builder --disable-rofiles-fuse --user --repo=repo --finish-only --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --disable-rofiles-fuse --user --repo=repo --finish-only --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
 
       - name: Create Bundle
         run: |
