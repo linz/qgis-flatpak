@@ -4,6 +4,17 @@ Custom flatpak packaging for QGIS, (QT6+Parquet)
 
 Forked from https://github.com/flathub/org.qgis.qgis with QT6 & Parquet additions
 
+## Usage
+
+Grab a release from https://github.com/linz/qgis-flatpak/releases 
+
+```shell
+flatpak install --user linz_qgis-beb3eecf7d44_build-16.flatpak
+
+flatpak run nz.govt.linz.qgis;
+```
+
+
 ## Building
 
 ```shell
