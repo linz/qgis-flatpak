@@ -310,28 +310,6 @@
             ]
         },
         {
-            "name": "openjpeg2",
-            "buildsystem": "cmake-ninja",
-            "builddir": true,
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/uclouvain/openjpeg.git",
-                    "tag": "v2.5.4",
-                    "x-checker-data": {
-                        "type": "git"
-                    },
-                    "commit": "6c4a29b00211eb0430fa0e5e890f1ce5c80f409f"
-                }
-            ],
-            "cleanup": [
-                "/bin",
-                "/include",
-                "/lib/openjpeg-*",
-                "/lib/pkgconfig"
-            ]
-        },
-        {
             "name": "poppler",
             "modules": [
                 {
@@ -447,8 +425,8 @@
                     "sources": [
                         {
                             "type": "file",
-                            "url": "https://files.pythonhosted.org/packages/7e/b1/8e63033b259e0a4e40dd1ec4a9fee17718016845048b43a36ec67d62e6fe/pyproject_metadata-0.9.1-py3-none-any.whl",
-                            "sha256": "ee5efde548c3ed9b75a354fc319d5afd25e9585fa918a34f62f904cc731973ad",
+                            "url": "https://files.pythonhosted.org/packages/c0/57/e69a1de45ec7a99a707e9f1a5defa035a48de0cae2d8582451c72d2db456/pyproject_metadata-0.10.0-py3-none-any.whl",
+                            "sha256": "b1e439a9f7560f9792ee5975dcf5e89d2510b1fc84a922d7e5d665aa9102d966",
                             "x-checker-data": {
                                 "type": "pypi",
                                 "name": "pyproject_metadata",
@@ -466,8 +444,8 @@
                     "sources": [
                         {
                             "type": "file",
-                            "url": "https://files.pythonhosted.org/packages/26/bd/fdb26366443620f1a8a4d4ec7bfa37d1fbbe7bf737b257c205bbcf95ba95/meson_python-0.18.0.tar.gz",
-                            "sha256": "c56a99ec9df669a40662fe46960321af6e4b14106c14db228709c1628e23848d",
+                            "url": "https://files.pythonhosted.org/packages/32/98/7fe5d1bf741c03c6eea04b6245737dbd79657d4f9200e82fcbb4cc12637b/meson_python-0.19.0.tar.gz",
+                            "sha256": "9959d198aa69b57fcfd354a34518c6f795b781a73ed0656f4d01660160cc2553",
                             "x-checker-data": {
                                 "type": "pypi",
                                 "name": "meson-python"
@@ -560,25 +538,6 @@
             ]
         },
         {
-            "name": "opencl-headers",
-            "buildsystem": "simple",
-            "build-commands": [
-                "cp -av CL /app/include/",
-                "install -p -D -m 0644 LICENSE -t ${FLATPAK_DEST}/share/licenses/opencl-headers/"
-            ],
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/KhronosGroup/OpenCL-Headers.git",
-                    "tag": "v2025.07.22",
-                    "x-checker-data": {
-                        "type": "git"
-                    },
-                    "commit": "8a97ebc88daa3495d6f57ec10bb515224400186f"
-                }
-            ]
-        },
-        {
             "name": "blosc",
             "buildsystem": "cmake-ninja",
             "sources": [
@@ -590,30 +549,6 @@
                         "type": "git"
                     },
                     "commit": "616f4b7343a8479f7e71dd3d7025bd92c9a6bbd0"
-                }
-            ]
-        },
-        {
-            "name": "libjxl",
-            "buildsystem": "cmake-ninja",
-            "config-opts": [
-                "-DJPEGXL_ENABLE_BENCHMARK:BOOL=OFF",
-                "-DJPEGXL_ENABLE_EXAMPLES:BOOL=OFF",
-                "-DJPEGXL_ENABLE_FUZZERS:BOOL=OFF",
-                "-DJPEGXL_ENABLE_PLUGINS:BOOL=ON",
-                "-DJPEGXL_ENABLE_VIEWERS:BOOL=OFF",
-                "-DJPEGXL_FORCE_SYSTEM_BROTLI:BOOL=ON",
-                "-DJPEGXL_BUNDLE_LIBPNG:BOOL=OFF"
-            ],
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/libjxl/libjxl.git",
-                    "tag": "v0.11.1",
-                    "x-checker-data": {
-                        "type": "git"
-                    },
-                    "commit": "794a5dcf0d54f9f0b20d288a12e87afb91d20dfc"
                 }
             ]
         },
@@ -667,49 +602,6 @@
                             "tag": "0.22.0"
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "name": "libheif",
-            "builddir": true,
-            "buildsystem": "cmake-ninja",
-            "config-opts": [
-                "-DCMAKE_COMPILE_WARNING_AS_ERROR=OFF"
-            ],
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/strukturag/libheif.git",
-                    "tag": "v1.20.2",
-                    "x-checker-data": {
-                        "type": "git"
-                    },
-                    "commit": "35dad50a9145332a7bfdf1ff6aef6801fb613d68"
-                }
-            ]
-        },
-        {
-            "name": "expat",
-            "x-comment": "This is on the FDO runtime, we need to bring it to work around https://github.com/libexpat/libexpat/issues/501",
-            "builddir": true,
-            "buildsystem": "cmake-ninja",
-            "subdir": "expat",
-            "config-opts": [
-                "-DEXPAT_BUILD_EXAMPLES=OFF",
-                "-DEXPAT_BUILD_DOCS=OFF",
-                "-DEXPAT_BUILD_TESTS=OFF"
-            ],
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/libexpat/libexpat.git",
-                    "tag": "R_2_7_3",
-                    "x-checker-data": {
-                        "type": "git",
-                        "tag-pattern": "^(R_[0-9_]+)$"
-                    },
-                    "commit": "4575e52f83e0d6d7bd24939eab8952bbc7bc358f"
                 }
             ]
         }

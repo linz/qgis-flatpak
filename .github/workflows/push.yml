@@ -55,39 +55,39 @@ jobs:
 
       - name: Build Group 1 - Foundation Libraries
         run: |
-           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=spatialite --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=spatialite --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
 
       - name: Build Group 2 - Database & Storage
         run: |
-           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=gdal --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=gdal --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
 
       - name: Build Group 3 - Qt Libraries
         run: |
-           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=qscintilla --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=qscintilla --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
 
       - name: Build Group 4 - Python Core
         run: |
-           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=python-setuptools --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=python-setuptools --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
 
       - name: Build Group 5 - Python Geospatial
         run: |
-           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=python-psycopg2 --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=python-psycopg2 --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
 
       - name: Build Group 6 - GRASS GIS
         run: |
-           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=gisgrass --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=gisgrass --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
 
       - name: Build Group 7 - Python Templates & Additional
         run: |
-           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=Draco --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=Draco --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
 
       - name: Build Group 8 - QGIS Main
         run: |
-           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=env-python --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=env-python --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
 
       - name: Finalize Build
         run: |
-           dbus-run-session flatpak-builder --disable-rofiles-fuse --user --repo=repo --finish-only --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+           dbus-run-session flatpak-builder --disable-rofiles-fuse --user --repo=repo --finish-only --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
 
       - name: Create Bundle
         run: |
