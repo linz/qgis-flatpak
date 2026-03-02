@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write # Required to push the built repo back to the branch
+  packages: write # Required to push Docker images to GHCR
 
 jobs:
   flatpak-build:
@@ -94,6 +95,22 @@ jobs:
           flatpak build-bundle repo ${BUILD_NAME}.flatpak nz.govt.linz.qgis
         env:
           BUILD_NAME: ${{ steps.bundle_info.outputs.build_id }}
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ steps.bundle_info.outputs.build_id }}
 
       - name: Upload Bundle
         uses: actions/upload-artifact@v4
