@@ -23,13 +23,22 @@ jobs:
       - name: Fix Git Trust
         run: git config --global --add safe.directory '/__w/qgis-flatpak/*'
 
-      - name: Cache Flatpak dependencies
+      - name: Cache Flatpak downloads
+        uses: actions/cache/restore@v4
+        id: cache-downloads
+        with:
+          path: .flatpak-builder/downloads
+          key: flatpak-downloads-${{ hashFiles('nz.govt.linz.qgis.json', 'modules/*.json', 'shared-modules/*.json') }}
+          restore-keys: |
+            flatpak-downloads-
+
+      - name: Cache Flatpak ccache
         uses: actions/cache@v4
         with:
-          path: .flatpak-builder
-          key: flatpak-builder-${{ hashFiles('modules/*.json') }}
+          path: .flatpak-builder/ccache
+          key: flatpak-ccache-${{ hashFiles('nz.govt.linz.qgis.json', 'modules/*.json', 'shared-modules/*.json') }}
           restore-keys: |
-            flatpak-builder-
+            flatpak-ccache-
 
       - name: Bundle info
         run: |
@@ -53,6 +62,13 @@ jobs:
       - name: Download Sources
         run: |
            dbus-run-session flatpak-builder --force-clean --download-only --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json
+
+      - name: Save Flatpak downloads (on success or failure)
+        if: always() && steps.cache-downloads.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .flatpak-builder/downloads
+          key: ${{ steps.cache-downloads.outputs.cache-primary-key }}
 
       - name: Build Group 1 - Foundation Libraries
         run: |
