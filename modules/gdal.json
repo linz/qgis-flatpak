@@ -49,8 +49,8 @@
     "sources": [
         {
             "type": "archive",
-            "url": "https://download.osgeo.org/gdal/3.11.4/gdal-3.11.4.tar.xz",
-            "sha256": "6401eba2bb63f5ef7a08d2157f240194f06d508d096898a705637aeea9d3bbe8",
+            "url": "https://download.osgeo.org/gdal/3.12.2/gdal-3.12.2.tar.xz",
+            "sha256": "21c5e0f91974383b4c5692b7103650f176f2f54f1b0d449787f444b89881e9b4",
             "x-checker-data": {
                 "type": "anitya",
                 "project-id": 881,
