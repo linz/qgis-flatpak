@@ -1,0 +1,14 @@
+**/debug/
+**/*.a
+**/*.la
+**/include/
+**/pkgconfig/
+**/man/
+**/doc/
+**/docs/
+**/phrasebooks/
+manifest-base-*.json
+manifest.json
+COMBINED_FILES
+combined_files
+build-files.tar.gz

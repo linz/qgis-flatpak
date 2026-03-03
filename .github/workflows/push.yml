@@ -120,6 +120,14 @@ jobs:
           mkdir -p combined_files
           cp -pPR build-dir/files/. combined_files/
           cp -pPR $RUNTIME_PATH/files/. combined_files/
+          # Remove heavy/unnecessary directories before archiving
+          rm -rf combined_files/lib/debug
+          rm -rf combined_files/include
+          rm -rf combined_files/lib/pkgconfig
+          rm -rf combined_files/share/doc
+          rm -rf combined_files/share/man
+          find combined_files/lib -name "*.a" -delete
+          find combined_files/lib -name "*.la" -delete
           tar -czf build-files.tar.gz -C combined_files .
 
       - name: Upload Artifacts
