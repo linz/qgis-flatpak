@@ -92,10 +92,6 @@ jobs:
         run: |
            dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=python-psycopg2 --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
 
-      - name: Build Group 6 - GRASS GIS
-        run: |
-           dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=gisgrass --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download
-
       - name: Build Group 7 - Python Templates & Additional
         run: |
            dbus-run-session flatpak-builder --force-clean --disable-rofiles-fuse --user --stop-at=Draco --state-dir=.flatpak-builder build-dir nz.govt.linz.qgis.json --disable-download

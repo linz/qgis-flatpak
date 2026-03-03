@@ -35,7 +35,6 @@
         "/app/cleanup-BaseApp.sh"
     ],
     "modules": [
-        "modules/arrow.json",
         "modules/proj.json",
         "modules/geos.json",
         "modules/spatialindex.json",
@@ -57,7 +56,6 @@
         "modules/PyYAML.json",
         "modules/python-owslib.json",
         "modules/python-psycopg2.json",
-        "modules/gisgrass.json",
         "modules/python3-markupsafe.json",
         "modules/python3-jinja2.json",
         "modules/exiv2.json",
@@ -77,15 +75,15 @@
             "config-opts": [
                 "-DBUILD_WITH_QT6=TRUE",
                 "-DENABLE_TESTS=FALSE",
-                "-DWITH_3D=TRUE",
-                "-DGRASS_PREFIX8=/app/grass84",
+                "-DWITH_3D=FALSE",
                 "-DQWT_LIBRARY=/app/lib/libqwt.so",
                 "-DSQLITE3_INCLUDE_DIR=/app/include",
                 "-DSQLITE3_LIBRARY=/app/lib/libsqlite3.so",
                 "-DUSE_OPENCL=ON",
-                "-DWITH_QUICK=ON",
+                "-DWITH_QUICK=OFF",
                 "-DWITH_PDAL=FALSE",
                 "-DWITH_QTWEBKIT=FALSE",
+                "-DWITH_QTWEBENGINE=OFF",
                 "-DSIP_BUILD_EXTRA_OPTIONS=--target-dir=/app/lib/python3.12/site-packages"
             ],
             "post-install": [
