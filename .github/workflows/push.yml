@@ -11,7 +11,9 @@ permissions:
 
 jobs:
   flatpak-build:
-    runs-on: ubuntu-latest_16core
+    runs-on: ubuntu-latest_32core
+    outputs:
+      build_id: ${{ steps.bundle_info.outputs.build_id }}
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
       options: --privileged
@@ -112,6 +114,36 @@ jobs:
         env:
           BUILD_NAME: ${{ steps.bundle_info.outputs.build_id }}
 
+      - name: Archive build files
+        run: |
+          tar -czf build-files.tar.gz -C build-dir/files .
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.bundle_info.outputs.build_id }}
+          path: |
+            ${{ steps.bundle_info.outputs.build_id }}.flatpak
+            build-files.tar.gz
+
+  docker-build:
+    needs: flatpak-build
+    runs-on: ubuntu-latest_32core
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.flatpak-build.outputs.build_id }}
+          path: .
+
+      - name: Extract build files
+        run: |
+          mkdir -p build-dir/files
+          tar -xzf build-files.tar.gz -C build-dir/files
+
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
@@ -126,13 +158,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ steps.bundle_info.outputs.build_id }}
-
-      - name: Upload Bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ steps.bundle_info.outputs.build_id }}
-          path: ${{ steps.bundle_info.outputs.build_id }}.flatpak
+            ghcr.io/${{ github.repository }}:${{ needs.flatpak-build.outputs.build_id }}
 
       - name: Generate Release Tag
         id: tag
@@ -146,4 +172,4 @@ jobs:
           gh release create ${{ steps.tag.outputs.release_tag }} \
             --title "Release ${{ steps.tag.outputs.release_tag }}" \
             --generate-notes \
-            ${{ steps.bundle_info.outputs.build_id }}.flatpak
+            ${{ needs.flatpak-build.outputs.build_id }}.flatpak
