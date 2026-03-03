@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   flatpak-build:
-    runs-on: ubuntu-latest_32core
+    runs-on: ubuntu-latest_64core
     outputs:
       build_id: ${{ steps.bundle_info.outputs.build_id }}
     container:
@@ -128,7 +128,7 @@ jobs:
 
   docker-build:
     needs: flatpak-build
-    runs-on: ubuntu-latest_32core
+    runs-on: ubuntu-latest_64core
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
