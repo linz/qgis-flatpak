@@ -35,6 +35,7 @@
         "/app/cleanup-BaseApp.sh"
     ],
     "modules": [
+        "modules/arrow.json",
         "modules/proj.json",
         "modules/geos.json",
         "modules/spatialindex.json",
