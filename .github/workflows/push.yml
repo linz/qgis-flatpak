@@ -116,7 +116,7 @@ jobs:
           mkdir -p combined_files
           cp -a $RUNTIME_PATH/files/. combined_files/
           chmod -R u+w combined_files
-          cp -af build-dir/files/. combined_files/
+          cp -af build-dir/files/. combined_files/ || true
           # Remove heavy/unnecessary directories before archiving
           rm -rf combined_files/lib/debug
           rm -rf combined_files/include
