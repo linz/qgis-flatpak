@@ -114,8 +114,9 @@ jobs:
         run: |
           RUNTIME_PATH=$(flatpak info -l org.kde.Platform//6.9 --user)
           mkdir -p combined_files
-          cp -pPR $RUNTIME_PATH/files/. combined_files/
-          cp -pPR build-dir/files/. combined_files/
+          rsync -a $RUNTIME_PATH/files/ combined_files/
+          chmod -R u+w combined_files
+          rsync -a build-dir/files/ combined_files/
           # Remove heavy/unnecessary directories before archiving
           rm -rf combined_files/lib/debug
           rm -rf combined_files/include
