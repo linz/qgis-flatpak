@@ -113,19 +113,15 @@ jobs:
       - name: Archive build files
         run: |
           RUNTIME_PATH=$(flatpak info -l org.kde.Platform//6.9 --user)
-          mkdir -p combined_files
-          cp -a $RUNTIME_PATH/files/. combined_files/
-          chmod -R u+w combined_files
-          cp -af build-dir/files/. combined_files/ || true
-          # Remove heavy/unnecessary directories before archiving
-          rm -rf combined_files/lib/debug
-          rm -rf combined_files/include
-          rm -rf combined_files/lib/pkgconfig
-          rm -rf combined_files/share/doc
-          rm -rf combined_files/share/man
-          find combined_files/lib -name "*.a" -delete
-          find combined_files/lib -name "*.la" -delete
-          tar -czf build-files.tar.gz -C combined_files .
+
+          # Prepare KDE Platform Archive
+          # We need to chmod it because flatpak runtimes are usually read-only
+          # but we want to be able to delete files later in the docker build
+          chmod -R u+w $RUNTIME_PATH/files
+          tar -czf kde-platform.tar.gz -C $RUNTIME_PATH/files .
+
+          # Prepare QGIS Runtime Archive
+          tar -czf qgis-runtime.tar.gz -C build-dir/files .
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -133,7 +129,8 @@ jobs:
           name: ${{ steps.bundle_info.outputs.build_id }}
           path: |
             ${{ steps.bundle_info.outputs.build_id }}.flatpak
-            build-files.tar.gz
+            kde-platform.tar.gz
+            qgis-runtime.tar.gz
 
   docker-build:
     needs: flatpak-build
@@ -150,8 +147,16 @@ jobs:
 
       - name: Extract build files
         run: |
-          mkdir -p build-dir/files
-          tar -xzf build-files.tar.gz -C build-dir/files
+          mkdir -p kde_platform qgis_runtime build-dir/files
+          tar -xzf kde-platform.tar.gz -C kde_platform
+          tar -xzf qgis-runtime.tar.gz -C qgis_runtime
+          rsync -a kde_platform/ build-dir/files/
+          rsync -a qgis_runtime/ build-dir/files/
+
+          # Clean up unnecessary files
+          rm -rf build-dir/files/lib/debug build-dir/files/include build-dir/files/lib/pkgconfig build-dir/files/share/doc build-dir/files/share/man
+          find build-dir/files/lib -name "*.a" -delete || true
+          find build-dir/files/lib -name "*.la" -delete || true
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
