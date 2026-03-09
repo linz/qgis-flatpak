@@ -147,16 +147,17 @@ jobs:
 
       - name: Extract build files
         run: |
-          mkdir -p kde_platform qgis_runtime build-dir/files
-          tar -xzf kde-platform.tar.gz -C kde_platform
-          tar -xzf qgis-runtime.tar.gz -C qgis_runtime
-          rsync -a kde_platform/ build-dir/files/
-          rsync -a qgis_runtime/ build-dir/files/
+          mkdir build-dir/files -p
+          tar -xzf kde-platform.tar.gz -C build-dir/files
+          tar -xzf qgis-runtime.tar.gz -C build-dir/files
 
           # Clean up unnecessary files
           rm -rf build-dir/files/lib/debug build-dir/files/include build-dir/files/lib/pkgconfig build-dir/files/share/doc build-dir/files/share/man
           find build-dir/files/lib -name "*.a" -delete || true
           find build-dir/files/lib -name "*.la" -delete || true
+
+          rm -fr build-dir/files/share/locale
+          rm -fr build-dir/files/sbin # why is this a link
 
       - name: Log in to GHCR
         uses: docker/login-action@v3

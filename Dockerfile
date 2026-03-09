@@ -1,7 +1,11 @@
-FROM ghcr.io/linz/action-kart:v0.3.0
+FROM ghcr.io/linz/action-kart:v0.3.0 AS builder
+RUN apt-get update && apt-get install rsync -y
 
-# Copy the extracted flatpak files to /usr/ (merging bin, lib, share, etc.)
-COPY build-dir/files/ /usr/
+COPY build-dir/files /tmp/qgis
+RUN rsync -aHK /tmp/qgis/ /usr/
+
+FROM ghcr.io/linz/action-kart:v0.3.0
+COPY --from=builder /usr/ /usr/
 
 # Many flatpak binaries are hardcoded to look for files in /app
 # We create a symlink from /app to /usr to satisfy these references
