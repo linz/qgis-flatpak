@@ -63,6 +63,7 @@
         "modules/protobuf.json",
         "modules/qtkeychain.json",
         "modules/Draco.json",
+        "modules/geographiclib.json",
         {
             "name": "qgis",
             "buildsystem": "cmake-ninja",
@@ -82,6 +83,7 @@
                 "-DSQLITE3_LIBRARY=/app/lib/libsqlite3.so",
                 "-DUSE_OPENCL=ON",
                 "-DWITH_QUICK=OFF",
+                "-DWITH_GEOGRAPHICLIB=TRUE",
                 "-DWITH_PDAL=FALSE",
                 "-DWITH_QTWEBKIT=FALSE",
                 "-DWITH_QTWEBENGINE=OFF",
