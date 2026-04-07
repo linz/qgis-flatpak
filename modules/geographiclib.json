@@ -1,0 +1,14 @@
+{
+    "name": "geographiclib",
+    "buildsystem": "cmake-ninja",
+    "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release"
+    ],
+    "sources": [
+        {
+            "type": "archive",
+            "url": "https://github.com/geographiclib/geographiclib/archive/refs/tags/v2.7.tar.gz",
+            "sha256": "78d77cc8216843b78d14b41970ed9de3dedc34b9cd50ad84af2849c63a41eff8"
+        }
+    ]
+}
