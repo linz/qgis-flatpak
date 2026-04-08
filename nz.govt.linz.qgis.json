@@ -6,7 +6,6 @@
     "runtime-version": "6.9",
     "sdk": "org.kde.Sdk",
     "command": "qgis",
-    "rename-icon": "qgis",
     "finish-args": [
         "--env=LD_LIBRARY_PATH=/app/lib:/app/grass84/lib",
         "--env=PROJ_LIB=/app/share/proj/",
@@ -91,7 +90,7 @@
             ],
             "post-install": [
                 "mv /app/share/applications/org.qgis.qgis.desktop /app/share/applications/nz.govt.linz.qgis.desktop",
-                "NEWNAME=\"LINZ QGIS ($(git rev-parse HEAD)) $(git log -1 --format=%cs HEAD)\";sed -i \"s;^Name=.*;Name=$NEWNAME;g\" /app/share/applications/nz.govt.linz.qgis.desktop"
+                "NEWNAME=\"LINZ QGIS ($(git rev-parse --short HEAD)) $(git log -1 --format=%cs HEAD)\";sed -i \"s;^Name=.*;Name=$NEWNAME;g\" /app/share/applications/nz.govt.linz.qgis.desktop"
             ]
         },
         {
@@ -101,8 +100,11 @@
                 {
                     "type": "file",
                     "path": "files/nz.govt.linz.qgis.svg",
-                    "dest": "/app/share/icons/hicolor/scalable/apps/"
+                    "dest": "."
                 }
+            ],
+            "build-commands": [
+                "install -D -m644 nz.govt.linz.qgis.svg /app/share/icons/hicolor/scalable/apps/nz.govt.linz.qgis.svg"
             ]
         },
         "modules/env-python.json"
