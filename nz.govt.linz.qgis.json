@@ -71,7 +71,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/qgis/qgis.git",
-                    "commit": "1ddcee3d0e439b1d89446cb09cef2b5faec1718b"
+                    "commit": "f04b834a13238c343c6174213f8ee5dcb167f48f"
                 }
             ],
             "config-opts": [
@@ -90,7 +90,19 @@
                 "-DSIP_BUILD_EXTRA_OPTIONS=--target-dir=/app/lib/python3.12/site-packages"
             ],
             "post-install": [
-                "mv /app/share/applications/org.qgis.qgis.desktop /app/share/applications/nz.govt.linz.qgis.desktop"
+                "mv /app/share/applications/org.qgis.qgis.desktop /app/share/applications/nz.govt.linz.qgis.desktop",
+                "NEWNAME=\"LINZ QGIS ($(git rev-parse HEAD)) $(git log -1 --format=%cs HEAD)\";sed -i \"s;^Name=.*;Name=$NEWNAME;g\" /app/share/applications/nz.govt.linz.qgis.desktop"
+            ]
+        },
+        {
+            "name": "linz-customizations",
+            "buildsystem": "simple",
+            "sources": [
+                {
+                    "type": "file",
+                    "path": "files/nz.govt.linz.qgis.svg",
+                    "dest": "/app/share/icons/hicolor/scalable/apps/"
+                }
             ]
         },
         "modules/env-python.json"
