@@ -90,7 +90,7 @@
             ],
             "post-install": [
                 "mv /app/share/applications/org.qgis.qgis.desktop /app/share/applications/nz.govt.linz.qgis.desktop",
-                "NEWNAME=\"LINZ QGIS ($(git rev-parse --short HEAD)) $(git log -1 --format=%cs HEAD)\";sed -i \"s;^Name=.*;Name=$NEWNAME;g\" /app/share/applications/nz.govt.linz.qgis.desktop"
+                "NEWNAME=\"LINZ QGIS ($(git rev-parse --short HEAD)) $(git log -1 --format=%cs HEAD)\"; sed -i \"s;^Name=.*;Name=$NEWNAME;; s;^Icon=.*;Icon=nz.govt.linz.qgis;\" /app/share/applications/nz.govt.linz.qgis.desktop"
             ]
         },
         {

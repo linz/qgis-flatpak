@@ -3,3 +3,4 @@ build/
 repo/
 app/
 linz/
+.flatpak-state/
