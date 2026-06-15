@@ -8,12 +8,12 @@
         {
             "type": "git",
             "url": "https://github.com/OSGeo/PROJ.git",
-            "tag": "9.7.0",
+            "tag": "9.8.1",
             "x-checker-data": {
                 "type": "git",
                 "tag-pattern": "^([0-9.]+)$"
             },
-            "commit": "b24cdfa5ecdcc26bf730a2d5a40fbaaf4e9bcc91"
+            "commit": "f08fa86c478c4bbbf003b1ec751dd84aa6eca486"
         }
     ]
 }

@@ -7,8 +7,8 @@
     "sources": [
         {
             "type": "archive",
-            "url": "https://ftp.postgresql.org/pub/source/v18.0/postgresql-18.0.tar.bz2",
-            "sha256": "0d5b903b1e5fe361bca7aa9507519933773eb34266b1357c4e7780fdee6d6078",
+            "url": "https://ftp.postgresql.org/pub/source/v18.4/postgresql-18.4.tar.bz2",
+            "sha256": "81a81ec695fb0c7901407defaa1d2f7973617154cf27ba74e3a7ab8e64436094",
             "x-checker-data": {
                 "type": "anitya",
                 "project-id": 5601,

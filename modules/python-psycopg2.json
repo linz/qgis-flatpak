@@ -9,11 +9,11 @@
         {
             "type": "git",
             "url": "https://github.com/psycopg/psycopg2.git",
-            "tag": "2.9.10",
+            "tag": "2.9.12",
             "x-checker-data": {
                 "type": "git"
             },
-            "commit": "a805acf59f402f554e95624b5e27518169ca7715"
+            "commit": "3a6d9d6ddc6b53eaa80b712f5fa6b23abbdc38db"
         }
     ]
 }

@@ -9,11 +9,11 @@
         {
             "type": "git",
             "url": "https://github.com/pypa/setuptools.git",
-            "tag": "v80.9.0",
+            "tag": "v82.0.1",
             "x-checker-data": {
                 "type": "git"
             },
-            "commit": "9c4d383631d3951fcae0afd73b5d08ff5a262976"
+            "commit": "5a13876673a41e3cd21d4d6e587f53d0fb4fd8e5"
         }
     ]
 }

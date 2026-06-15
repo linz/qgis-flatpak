@@ -9,7 +9,8 @@
             "type": "git",
             "url": "https://github.com/libspatialindex/libspatialindex.git",
             "commit": "4a3bd449b9f2858d31a4619ba60bae6d1d30b77d",
-            "tag": "2.0.0"
+            "tag": "2.0.0",
+            "//": "Cannot build QGIS using libspatialindex >= 2.1"
         }
     ]
 }

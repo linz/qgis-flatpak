@@ -15,22 +15,21 @@
         "--with-geos",
         "--with-sqlite=yes",
         "--with-python=yes",
-        "--with-pdal=no",
         "--with-postgres"
     ],
     "sources": [
         {
             "type": "git",
             "url": "https://github.com/OSGeo/grass.git",
-            "tag": "8.4.1",
+            "tag": "8.5.0",
             "x-checker-data": {
                 "type": "git",
                 "tag-pattern": "^([0-9.]+)$"
             },
-            "commit": "45ca3179ab0c450329d5ea410fce1b47b6bffbc8"
+            "commit": "8d6ceba290a2f0059a7301b9d4944455f313da72"
         }
     ],
     "modules": [
-        "../shared-modules/glu/glu-9.json"
+        "shared-modules/glu/glu-9.json"
     ]
 }
