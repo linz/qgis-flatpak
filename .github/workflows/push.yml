@@ -112,7 +112,7 @@ jobs:
 
       - name: Archive build files
         run: |
-          RUNTIME_PATH=$(flatpak info -l org.kde.Platform//6.9 --user)
+          RUNTIME_PATH=$(flatpak info -l org.kde.Platform//6.11 --user)
 
           # Prepare KDE Platform Archive
           # We need to chmod it because flatpak runtimes are usually read-only
