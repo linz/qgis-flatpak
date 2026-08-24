@@ -34,35 +34,6 @@
         "/app/cleanup-BaseApp.sh"
     ],
     "modules": [
-        "modules/arrow.json",
-        "modules/proj.json",
-        "modules/geos.json",
-        "modules/spatialindex.json",
-        "modules/minizip.json",
-        "modules/spatialite.json",
-        "modules/postgresql.json",
-        "modules/unixodbc.json",
-        "modules/zstd.json",
-        "modules/gdal.json",
-        "modules/qca.json",
-        "modules/qwt.json",
-        "modules/libzip.json",
-        "modules/gsl.json",
-        "modules/qscintilla.json",
-        "modules/python-setuptools.json",
-        "modules/python-six.json",
-        "modules/python-future.json",
-        "modules/pyproj.json",
-        "modules/PyYAML.json",
-        "modules/python-owslib.json",
-        "modules/python-psycopg2.json",
-        "modules/python3-markupsafe.json",
-        "modules/python3-jinja2.json",
-        "modules/exiv2.json",
-        "modules/protobuf.json",
-        "modules/qtkeychain.json",
-        "modules/Draco.json",
-        "modules/geographiclib.json",
         {
             "name": "qgis",
             "buildsystem": "cmake-ninja",
@@ -70,8 +41,8 @@
                 {
                     "type": "git",
                     "url": "https://github.com/qgis/qgis.git",
-                    "//": "v4.0.3",
-                    "commit": "70e40ae6e77baca65016ff83dbcb90a8f336ab4f"
+                    "//": "v4.2.1",
+                    "commit": "f229b86a9c1b15fa7cac44fadc87bcb544b55dec"
                 }
             ],
             "config-opts": [
@@ -92,6 +63,1437 @@
             "post-install": [
                 "mv /app/share/applications/org.qgis.qgis.desktop /app/share/applications/nz.govt.linz.qgis.desktop",
                 "NEWNAME=\"LINZ QGIS ($(git rev-parse --short HEAD)) $(git log -1 --format=%cs HEAD)\"; sed -i \"s;^Name=.*;Name=$NEWNAME;; s;^Icon=.*;Icon=nz.govt.linz.qgis;\" /app/share/applications/nz.govt.linz.qgis.desktop"
+            ],
+            "modules": [
+                {
+                    "name": "boost",
+                    "buildsystem": "simple",
+                    "build-commands": [
+                        "./bootstrap.sh --prefix=${FLATPAK_DEST} --with-icu",
+                        "./b2 install -j ${FLATPAK_BUILDER_N_JOBS} headers variant=release threading=multi --layout=system"
+                    ],
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://archives.boost.io/release/1.90.0/source/boost_1_90_0.tar.bz2",
+                            "sha256": "49551aff3b22cbc5c5a9ed3dbc92f0e23ea50a0f7325b0d198b705e8ee3fc305",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 6845,
+                                "url-template": "https://archives.boost.io/release/$version/source/boost_${major}_${minor}_$patch.tar.bz2"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "arrow",
+                    "buildsystem": "simple",
+                    "subdir": "cpp",
+                    "//": "Bundled dependency tarballs must match cpp/thirdparty/versions.txt of the pinned Arrow version. Substrait is disabled (nothing here consumes it) and Boost/codecs come from the boost module / KDE runtime, so Arrow does not build its own protobuf, boost, zlib, zstd, lz4, bz2 or brotli.",
+                    "build-options": {
+                        "env": {
+                            "ARROW_MIMALLOC_URL": "/run/build/arrow/mimalloc-v3.3.1.tar.gz",
+                            "ARROW_RAPIDJSON_URL": "/run/build/arrow/rapidjson-232389d4f1012dddec4ef84861face2d2ba85709.tar.gz",
+                            "ARROW_RE2_URL": "/run/build/arrow/re2-2023-03-01.tar.gz",
+                            "ARROW_SNAPPY_URL": "/run/build/arrow/snappy-1.2.2.tar.gz",
+                            "ARROW_THRIFT_URL": "/run/build/arrow/thrift-0.22.0.tar.gz",
+                            "ARROW_UTF8PROC_URL": "/run/build/arrow/utf8proc-v2.10.0.tar.gz",
+                            "ARROW_XSIMD_URL": "/run/build/arrow/xsimd-14.2.0.tar.gz",
+                            "CMAKE_POLICY_VERSION_MINIMUM": "3.5"
+                        }
+                    },
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/apache/arrow.git",
+                            "tag": "apache-arrow-25.0.0",
+                            "x-checker-data": {
+                                "type": "git",
+                                "tag-pattern": "^apache-arrow-([0-9.]+)$"
+                            },
+                            "commit": "59bea6ec485e7fe351d1aa6753f964f6a6bc353a"
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://github.com/microsoft/mimalloc/archive/v3.3.1.tar.gz",
+                            "sha256": "42c16914168ac6741eeb407e83b93a12b2b7ee25a7e14e6b4807fab8b577a540",
+                            "mirror-urls": [],
+                            "dest-filename": "mimalloc-v3.3.1.tar.gz"
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://github.com/miloyip/rapidjson/archive/232389d4f1012dddec4ef84861face2d2ba85709.tar.gz",
+                            "sha256": "b9290a9a6d444c8e049bd589ab804e0ccf2b05dc5984a19ed5ae75d090064806",
+                            "dest-filename": "rapidjson-232389d4f1012dddec4ef84861face2d2ba85709.tar.gz"
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://github.com/google/re2/archive/2023-03-01.tar.gz",
+                            "sha256": "7a9a4824958586980926a300b4717202485c4b4115ac031822e29aa4ef207e48",
+                            "dest-filename": "re2-2023-03-01.tar.gz"
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://github.com/google/snappy/archive/1.2.2.tar.gz",
+                            "sha256": "90f74bc1fbf78a6c56b3c4a082a05103b3a56bb17bca1a27e052ea11723292dc",
+                            "dest-filename": "snappy-1.2.2.tar.gz"
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://archive.apache.org/dist/thrift/0.22.0/thrift-0.22.0.tar.gz",
+                            "sha256": "794a0e455787960d9f27ab92c38e34da27e8deeda7a5db0e59dc64a00df8a1e5",
+                            "dest-filename": "thrift-0.22.0.tar.gz"
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://github.com/JuliaStrings/utf8proc/archive/v2.10.0.tar.gz",
+                            "sha256": "6f4f1b639daa6dca9f80bc5db1233e9cbaa31a67790887106160b33ef743f136",
+                            "mirror-urls": [
+                                "https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v2.10.0.tar.gz"
+                            ],
+                            "dest-filename": "utf8proc-v2.10.0.tar.gz"
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://github.com/xtensor-stack/xsimd/archive/14.2.0.tar.gz",
+                            "sha256": "21e841ab684b05331e81e7f782431753a029ef7b7d9d6d3ddab837e7782a40ee",
+                            "mirror-urls": [
+                                "https://github.com/xtensor-stack/xsimd/archive/refs/tags/14.2.0.tar.gz"
+                            ],
+                            "dest-filename": "xsimd-14.2.0.tar.gz"
+                        }
+                    ],
+                    "build-commands": [
+                        "cmake -GNinja --preset ninja-release -DARROW_SUBSTRAIT=OFF -DBoost_SOURCE=SYSTEM -DCMAKE_INSTALL_PREFIX=/app -DCMAKE_INSTALL_LIBDIR=/app/lib && cmake --build . && ninja install"
+                    ]
+                },
+                {
+                    "name": "proj",
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DBUILD_TESTING=OFF"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/OSGeo/PROJ.git",
+                            "tag": "9.8.1",
+                            "x-checker-data": {
+                                "type": "git",
+                                "tag-pattern": "^([0-9.]+)$"
+                            },
+                            "commit": "f08fa86c478c4bbbf003b1ec751dd84aa6eca486"
+                        }
+                    ]
+                },
+                {
+                    "name": "geos",
+                    "buildsystem": "cmake-ninja",
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "http://download.osgeo.org/geos/geos-3.14.1.tar.bz2",
+                            "sha256": "3c20919cda9a505db07b5216baa980bacdaa0702da715b43f176fb07eff7e716",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 13493,
+                                "url-template": "http://download.osgeo.org/geos/geos-$version.tar.bz2",
+                                "stable-only": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "spatialindex",
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DBUILD_TESTING=OFF"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/libspatialindex/libspatialindex.git",
+                            "commit": "4a3bd449b9f2858d31a4619ba60bae6d1d30b77d",
+                            "tag": "2.0.0",
+                            "//": "Cannot build QGIS using libspatialindex >= 2.1"
+                        }
+                    ]
+                },
+                {
+                    "name": "minizip",
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DZLIB_BUILD_MINIZIP=ON",
+                        "-DMINIZIP_INSTALL=ON"
+                    ],
+                    "subdir": "contrib/minizip",
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/madler/zlib",
+                            "tag": "v1.3.2",
+                            "x-checker-data": {
+                                "type": "git",
+                                "tag-pattern": "^v(.+)$"
+                            },
+                            "commit": "da607da739fa6047df13e66a2af6b8bec7c2a498"
+                        }
+                    ]
+                },
+                {
+                    "name": "spatialite",
+                    "config-opts": [
+                        "prefix=/app",
+                        "--enable-libxml2"
+                    ],
+                    "rm-configure": true,
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-5.1.0.tar.gz",
+                            "sha256": "43be2dd349daffe016dd1400c5d11285828c22fea35ca5109f21f3ed50605080",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 1723,
+                                "stable-only": true,
+                                "url-template": "http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-$version.tar.gz"
+                            }
+                        },
+                        {
+                            "type": "script",
+                            "dest-filename": "autogen.sh",
+                            "commands": [
+                                "autoreconf -vfi"
+                            ]
+                        }
+                    ],
+                    "modules": [
+                        {
+                            "name": "freexl",
+                            "rm-configure": true,
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "http://www.gaia-gis.it/gaia-sins/freexl-sources/freexl-2.0.0.tar.gz",
+                                    "sha256": "176705f1de58ab7c1eebbf5c6de46ab76fcd8b856508dbd28f5648f7c6e1a7f0",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 855,
+                                        "stable-only": true,
+                                        "url-template": "http://www.gaia-gis.it/gaia-sins/freexl-sources/freexl-$version.tar.gz"
+                                    }
+                                },
+                                {
+                                    "type": "script",
+                                    "dest-filename": "autogen.sh",
+                                    "commands": [
+                                        "AUTOMAKE=\"automake --foreign\" autoreconf -vfi"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "rttopo",
+                            "sources": [
+                                {
+                                    "type": "git",
+                                    "url": "https://git.osgeo.org/gitea/rttopo/librttopo.git",
+                                    "tag": "librttopo-1.1.0",
+                                    "commit": "98a8bdd0b2d13f6b685d0658b4bce15d46606a1a",
+                                    "x-checker-data": {
+                                        "type": "git",
+                                        "tag-pattern": "^librttopo-([0-9.]+)$"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "postgresql",
+                    "config-opts": [
+                        "--disable-rpath",
+                        "--with-openssl"
+                    ],
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://ftp.postgresql.org/pub/source/v18.4/postgresql-18.4.tar.bz2",
+                            "sha256": "81a81ec695fb0c7901407defaa1d2f7973617154cf27ba74e3a7ab8e64436094",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 5601,
+                                "stable-only": true,
+                                "url-template": "https://ftp.postgresql.org/pub/source/v$version/postgresql-$version.tar.bz2"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "unixodbc",
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "http://www.unixodbc.org/unixODBC-2.3.14.tar.gz",
+                            "sha256": "4e2814de3e01fc30b0b9f75e83bb5aba91ab0384ee951286504bb70205524771",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 7344,
+                                "stable-only": true,
+                                "url-template": "http://www.unixodbc.org/unixODBC-$version.tar.gz"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "zstd",
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DCMAKE_BUILD_TYPE=Release"
+                    ],
+                    "subdir": "build/cmake",
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://github.com/facebook/zstd/releases/download/v1.5.7/zstd-1.5.7.tar.gz",
+                            "sha256": "eb33e51f49a15e023950cd7825ca74a4a2b43db8354825ac24fc1b7ee09e6fa3",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 12083,
+                                "url-template": "https://github.com/facebook/zstd/releases/download/v$version/zstd-$version.tar.gz",
+                                "stable-only": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "gdal",
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DGDAL_USE_EXPAT=ON",
+                        "-DENABLE_IPO=ON",
+                        "-DBUILD_PYTHON_BINDINGS=ON",
+                        "-DGDAL_ENABLE_PLUGINS=ON",
+                        "-DGDAL_USE_ARROW=ON",
+                        "-DGDAL_USE_BLOSC=ON",
+                        "-DGDAL_USE_CFITSIO=ON",
+                        "-DGDAL_USE_CURL=ON",
+                        "-DGDAL_USE_CRYPTOPP=ON",
+                        "-DGDAL_USE_DEFLATE=ON",
+                        "-DGDAL_USE_FREEXL=ON",
+                        "-DGDAL_USE_GEOTIFF=ON",
+                        "-DGDAL_USE_GEOS=ON",
+                        "-DGDAL_USE_GIF=ON",
+                        "-DGDAL_USE_HEIF=ON",
+                        "-DGDAL_USE_HDF5=ON",
+                        "-DGDAL_USE_ICONV=ON",
+                        "-DGDAL_USE_JPEG=ON",
+                        "-DGDAL_USE_JSONC=ON",
+                        "-DGDAL_USE_JXL=ON",
+                        "-DGDAL_USE_LIBLZMA=ON",
+                        "-DGDAL_USE_LERC=ON",
+                        "-DGDAL_USE_LIBXML2=ON",
+                        "-DGDAL_USE_LZ4=ON",
+                        "-DGDAL_USE_MYSQL=ON",
+                        "-DGDAL_USE_NETCDF=ON",
+                        "-DGDAL_USE_ODBC=ON",
+                        "-DGDAL_USE_OPENCL=ON",
+                        "-DGDAL_USE_OPENEXR=ON",
+                        "-DGDAL_USE_OPENJPEG=ON",
+                        "-DGDAL_USE_OPENSSL=ON",
+                        "-DGDAL_USE_PARQUET=ON",
+                        "-DGDAL_USE_PCRE2=ON",
+                        "-DGDAL_USE_PNG=ON",
+                        "-DGDAL_USE_POPPLER=ON",
+                        "-DGDAL_USE_POSTGRESQL=ON",
+                        "-DGDAL_USE_QHULL=ON",
+                        "-DGDAL_USE_SPATIALITE=ON",
+                        "-DGDAL_USE_SQLITE3=ON",
+                        "-DGDAL_USE_TIFF=ON",
+                        "-DGDAL_USE_WEBP=ON",
+                        "-DGDAL_USE_XERCESC=ON",
+                        "-DGDAL_USE_ZLIB=ON",
+                        "-DGDAL_USE_ZSTD=ON"
+                    ],
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://download.osgeo.org/gdal/3.13.2/gdal-3.13.2.tar.xz",
+                            "sha256": "0200b7878d837a7f475ff4070121d0e601f8ef801c2fd83a64294c544f609211",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 881,
+                                "url-template": "https://download.osgeo.org/gdal/$version/gdal-$version.tar.xz",
+                                "stable-only": true
+                            }
+                        }
+                    ],
+                    "modules": [
+                        {
+                            "name": "swig",
+                            "config-opts": [
+                                "--without-boost",
+                                "--without-pcre",
+                                "--without-alllang",
+                                "--with-python3"
+                            ],
+                            "cleanup": [
+                                "/bin",
+                                "/share/swig"
+                            ],
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "http://prdownloads.sourceforge.net/swig/swig-4.5.0.tar.gz",
+                                    "sha256": "22ae0e887f8cca8031a325c67d005207653200b40e71edb3f88780e28e47d0ff",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 4919,
+                                        "url-template": "http://prdownloads.sourceforge.net/swig/swig-$version.tar.gz",
+                                        "stable-only": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "xerces-c",
+                            "no-autogen": true,
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://dlcdn.apache.org//xerces/c/3/sources/xerces-c-3.3.0.tar.xz",
+                                    "sha256": "a83e12af82dc4fea09c592979fdbb6f206eeaa968562d7d18a0a4dd032c51267",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 5182,
+                                        "url-template": "https://dlcdn.apache.org//xerces/c/$major/sources/xerces-c-$version.tar.xz",
+                                        "stable-only": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "szip",
+                            "no-autogen": true,
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz",
+                                    "sha256": "21ee958b4f2d4be2c9cabfa5e1a94877043609ce86fde5f286f105f7ff84d412",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 13633,
+                                        "url-template": "https://support.hdfgroup.org/ftp/lib-external/szip/$version/src/szip-$version.tar.gz",
+                                        "stable-only": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "hdf5",
+                            "buildsystem": "cmake-ninja",
+                            "subdir": "hdf5-1.14.6",
+                            "builddir": true,
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/hdf5-1.14.6.tar.gz",
+                                    "sha256": "e4defbac30f50d64e1556374aa49e574417c9e72c6b1de7a4ff88c4b1bea6e9b"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "uriparser",
+                            "buildsystem": "cmake-ninja",
+                            "config-opts": [
+                                "-DURIPARSER_BUILD_TESTS=OFF",
+                                "-DURIPARSER_BUILD_DOCS=OFF"
+                            ],
+                            "builddir": true,
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://github.com/uriparser/uriparser/releases/download/uriparser-1.0.2/uriparser-1.0.2.tar.bz2",
+                                    "sha256": "dd2e4843f43de6f5aedf430e530f1e2d159eba8ca4d64c2787af1c20f707a9e4",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 10160,
+                                        "url-template": "https://github.com/uriparser/uriparser/releases/download/uriparser-$version/uriparser-$version.tar.bz2",
+                                        "stable-only": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cfitsio",
+                            "buildsystem": "cmake-ninja",
+                            "config-opts": [
+                                "-DUSE_PTHREADS=ON"
+                            ],
+                            "builddir": true,
+                            "sources": [
+                                {
+                                    "type": "git",
+                                    "url": "https://github.com/HEASARC/cfitsio.git",
+                                    "tag": "cfitsio-4.6.4",
+                                    "x-checker-data": {
+                                        "type": "git",
+                                        "tag-pattern": "^(.+)$"
+                                    },
+                                    "commit": "7768589025af98f2ed49c6818bb62bd7c0bfddb2"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "armadillo",
+                            "buildsystem": "cmake-ninja",
+                            "config-opts": [
+                                "-DBUILD_SMOKE_TEST=OFF"
+                            ],
+                            "builddir": true,
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://sourceforge.net/projects/arma/files/armadillo-15.4.2.tar.xz",
+                                    "sha256": "58fa258d0e1f93074c9afa792027fc259b85cb974ccc0b932b061d4ada5bd83a",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 7006,
+                                        "url-template": "https://sourceforge.net/projects/arma/files/armadillo-$version.tar.xz",
+                                        "stable-only": true
+                                    }
+                                }
+                            ],
+                            "modules": [
+                                {
+                                    "name": "lapack",
+                                    "buildsystem": "cmake",
+                                    "builddir": true,
+                                    "config-opts": [
+                                        "-DCMAKE_BUILD_TYPE=Release",
+                                        "-DBUILD_SHARED_LIBS=ON",
+                                        "-DBUILD_TESTING=OFF",
+                                        "-DCMAKE_Fortran_COMPILER=gfortran",
+                                        "-DLAPACKE=ON",
+                                        "-DCBLAS=ON"
+                                    ],
+                                    "sources": [
+                                        {
+                                            "type": "git",
+                                            "url": "https://github.com/Reference-LAPACK/lapack.git",
+                                            "tag": "v3.12.1",
+                                            "x-checker-data": {
+                                                "type": "git"
+                                            },
+                                            "commit": "6ec7f2bc4ecf4c4a93496aa2fa519575bc0e39ca"
+                                        }
+                                    ],
+                                    "cleanup": [
+                                        "/lib/cmake"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cryptopp",
+                            "buildsystem": "simple",
+                            "build-commands": [
+                                "make shared all",
+                                "make install PREFIX=${FLATPAK_DEST}"
+                            ],
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://github.com/weidai11/cryptopp/archive/CRYPTOPP_8_9_0.tar.gz",
+                                    "sha256": "ab5174b9b5c6236588e15a1aa1aaecb6658cdbe09501c7981ac8db276a24d9ab",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 14487,
+                                        "stable-only": true,
+                                        "url-template": "https://github.com/weidai11/cryptopp/archive/CRYPTOPP_${major}_${minor}_$patch.tar.gz"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "libkml",
+                            "buildsystem": "cmake-ninja",
+                            "config-opts": [
+                                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+                            ],
+                            "builddir": true,
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://github.com/libkml/libkml/archive/1.3.0.tar.gz",
+                                    "sha256": "8892439e5570091965aaffe30b08631fdf7ca7f81f6495b4648f0950d7ea7963",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 10558,
+                                        "url-template": "https://github.com/libkml/libkml/archive/$version.tar.gz",
+                                        "stable-only": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "netcdf",
+                            "no-autogen": true,
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://github.com/Unidata/netcdf-c/archive/v4.10.1.tar.gz",
+                                    "sha256": "33c27231c478c3b35da7c7758fbdd02da1fe407abcb16ddfe195f69d164f930d",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 10354,
+                                        "url-template": "https://github.com/Unidata/netcdf-c/archive/v$version.tar.gz",
+                                        "stable-only": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "poppler",
+                            "modules": [
+                                {
+                                    "name": "popplerdata",
+                                    "buildsystem": "cmake-ninja",
+                                    "builddir": true,
+                                    "sources": [
+                                        {
+                                            "type": "archive",
+                                            "url": "https://poppler.freedesktop.org/poppler-data-0.4.12.tar.gz",
+                                            "sha256": "c835b640a40ce357e1b83666aabd95edffa24ddddd49b8daff63adb851cdab74",
+                                            "x-checker-data": {
+                                                "type": "anitya",
+                                                "project-id": 3687,
+                                                "stable-only": true,
+                                                "url-template": "https://poppler.freedesktop.org/poppler-data-$version.tar.gz"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            "config-opts": [
+                                "-DCMAKE_BUILD_TYPE=Release",
+                                "-DENABLE_TESTING=OFF",
+                                "-DENABLE_UNSTABLE_API_ABI_HEADERS=ON",
+                                "-DENABLE_CPP=ON",
+                                "-DENABLE_GLIB=OFF",
+                                "-DENABLE_GOBJECT_INTROSPECTION=OFF",
+                                "-DENABLE_UTILS=OFF",
+                                "-DENABLE_QT6=ON",
+                                "-DENABLE_QT5=OFF",
+                                "-DENABLE_LIBOPENJPEG=openjpeg2"
+                            ],
+                            "cleanup": [
+                                "/bin",
+                                "/share"
+                            ],
+                            "buildsystem": "cmake-ninja",
+                            "builddir": true,
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://poppler.freedesktop.org/poppler-26.08.0.tar.xz",
+                                    "sha256": "dc906e68cea698109706ac6aa3d2c9d4512fcfcac42d90b8afcda486d1b9abd0",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 3686,
+                                        "stable-only": true,
+                                        "url-template": "https://poppler.freedesktop.org/poppler-$version.tar.xz"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "mariadb-libs",
+                            "x-comment": "for mysql-boost",
+                            "config-opts": [
+                                "-DCOMPILATION_COMMENT=\"Flathub - QGIS\"",
+                                "-DCMAKE_BUILD_TYPE=Release",
+                                "-DFORCE_INSOURCE_BUILD=1",
+                                "-DWITH_EDITLINE=bundled",
+                                "-DWITH_PCRE2=system",
+                                "-DWITH_SSL=system",
+                                "-DWITH_ZLIB=system",
+                                "-DWITH_LIBFMT=system",
+                                "-DWITH_UNIT_TESTS=OFF",
+                                "-DPLUGIN_FEDERATED=NO",
+                                "-DWITHOUT_SERVER=ON"
+                            ],
+                            "cleanup": [
+                                "/bin"
+                            ],
+                            "buildsystem": "cmake-ninja",
+                            "builddir": false,
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://archive.mariadb.org/mariadb-13.0.1/source/mariadb-13.0.1.tar.gz",
+                                    "sha256": "cc681a84cc24d2852b93c5bf5fe199084edd553ee72656e10d4b50ec476aa33c",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 1887,
+                                        "stable-only": true,
+                                        "url-template": "https://archive.mariadb.org/mariadb-$version/source/mariadb-$version.tar.gz"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "python3-numpy",
+                            "buildsystem": "simple",
+                            "build-commands": [
+                                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"numpy\" --no-build-isolation"
+                            ],
+                            "sources": [
+                                {
+                                    "type": "file",
+                                    "url": "https://files.pythonhosted.org/packages/65/6e/09db70a523a96d25e115e71cc56a6f9031e7b8cd166c1ac8438307c14058/numpy-1.26.4.tar.gz",
+                                    "sha256": "2a02aba9ed12e4ac4eb3ea9421c420301a0c6460d9830d74a9df87efa4912010",
+                                    "x---x-checker-data": {
+                                        "x-comment": "commented because numpy 2.0 wants a newer python",
+                                        "type": "pypi",
+                                        "name": "numpy"
+                                    }
+                                }
+                            ],
+                            "modules": [
+                                {
+                                    "name": "pyproject-metadata",
+                                    "buildsystem": "simple",
+                                    "build-commands": [
+                                        "pip3 install --verbose --exists-action=i --no-index --find-links=file://${PWD} --prefix=${FLATPAK_DEST} pyproject_metadata --no-build-isolation"
+                                    ],
+                                    "sources": [
+                                        {
+                                            "type": "file",
+                                            "url": "https://files.pythonhosted.org/packages/b9/8e/d883718e872abc214ba053f60f7e6edc2abd5ffbd1544beb01a9c92ddd3c/pyproject_metadata-0.12.1-py3-none-any.whl",
+                                            "sha256": "f7162d580a96386a8eb096da06215f981f547d1490f03055ef99e323bc2da427",
+                                            "x-checker-data": {
+                                                "type": "pypi",
+                                                "name": "pyproject_metadata",
+                                                "packagetype": "bdist_wheel"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "meson-python",
+                                    "buildsystem": "simple",
+                                    "build-commands": [
+                                        "pip3 install --verbose --exists-action=i --no-index --find-links=file://${PWD} --prefix=${FLATPAK_DEST} meson-python --no-build-isolation"
+                                    ],
+                                    "sources": [
+                                        {
+                                            "type": "file",
+                                            "url": "https://files.pythonhosted.org/packages/8b/f0/d794d7ed8a843a8a8947768f3b329d1e8601222dc95d930f4a5f9706cd6c/meson_python-0.20.0.tar.gz",
+                                            "sha256": "6d9726ae6cd37e22f210c74b364b30180a68c20442e97ff09f3c566a414af738",
+                                            "x-checker-data": {
+                                                "type": "pypi",
+                                                "name": "meson-python"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "libdeflate",
+                            "buildsystem": "cmake-ninja",
+                            "builddir": true,
+                            "sources": [
+                                {
+                                    "type": "git",
+                                    "url": "https://github.com/ebiggers/libdeflate.git",
+                                    "tag": "v1.25",
+                                    "x-checker-data": {
+                                        "type": "git"
+                                    },
+                                    "commit": "c8c56a20f8f621e6a966b716b31f1dedab6a41e3"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "libgeotiff",
+                            "config-opts": [
+                                "--with-jpeg=yes",
+                                "--with-zlib=yes"
+                            ],
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "https://github.com/OSGeo/libgeotiff/releases/download/1.7.4/libgeotiff-1.7.4.tar.gz",
+                                    "sha256": "c598d04fdf2ba25c4352844dafa81dde3f7fd968daa7ad131228cd91e9d3dc47",
+                                    "x-checker-data": {
+                                        "type": "anitya",
+                                        "project-id": 21361,
+                                        "url-template": "https://github.com/OSGeo/libgeotiff/releases/download/$version/libgeotiff-$version.tar.gz",
+                                        "stable-only": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "json-c",
+                            "buildsystem": "cmake-ninja",
+                            "config-opts": [
+                                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+                            ],
+                            "builddir": true,
+                            "sources": [
+                                {
+                                    "type": "git",
+                                    "url": "https://github.com/json-c/json-c",
+                                    "tag": "json-c-0.19-20260627",
+                                    "x-checker-data": {
+                                        "type": "git",
+                                        "tag-pattern": "^json-c-([\\d.]+)-[\\d]+$"
+                                    },
+                                    "commit": "aa716cd8d663c976b99b0f30f102ee1d8ef63146"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "qhull",
+                            "buildsystem": "cmake-ninja",
+                            "config-opts": [
+                                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+                            ],
+                            "sources": [
+                                {
+                                    "type": "archive",
+                                    "url": "http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz",
+                                    "sha256": "b5c2d7eb833278881b952c8a52d20179eab87766b00b865000469a45c1838b7e"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "blosc",
+                            "buildsystem": "cmake-ninja",
+                            "config-opts": [
+                                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+                            ],
+                            "sources": [
+                                {
+                                    "type": "git",
+                                    "url": "https://github.com/Blosc/c-blosc.git",
+                                    "tag": "v1.21.6",
+                                    "x-checker-data": {
+                                        "type": "git"
+                                    },
+                                    "commit": "616f4b7343a8479f7e71dd3d7025bd92c9a6bbd0"
+                                },
+                                {
+                                    "type": "patch",
+                                    "path": "blosc-gcc15.patch"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "openexr",
+                            "buildsystem": "cmake-ninja",
+                            "config-opts": [
+                                "-DOPENEXR_BUILD_TOOLS=OFF",
+                                "-DOPENEXR_BUILD_EXAMPLES=OFF",
+                                "-DBUILD_TESTING=OFF"
+                            ],
+                            "sources": [
+                                {
+                                    "type": "git",
+                                    "url": "https://github.com/AcademySoftwareFoundation/openexr.git",
+                                    "tag": "v3.4.14",
+                                    "x-checker-data": {
+                                        "type": "git"
+                                    },
+                                    "commit": "777d231a179de1711d2a942810d9559216ab3f4c"
+                                }
+                            ],
+                            "modules": [
+                                {
+                                    "name": "openexr-imath",
+                                    "buildsystem": "cmake-ninja",
+                                    "sources": [
+                                        {
+                                            "type": "git",
+                                            "url": "https://github.com/AcademySoftwareFoundation/Imath.git",
+                                            "tag": "v3.2.2",
+                                            "x-checker-data": {
+                                                "type": "git"
+                                            },
+                                            "commit": "1e480d11cb98b032a2dece9b9a8730512effc7f6"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "OpenJPH",
+                                    "buildsystem": "cmake-ninja",
+                                    "config-opts": [
+                                        "-DOJPH_ENABLE_TIFF_SUPPORT=OFF",
+                                        "-DOJPH_BUILD_EXECUTABLES=OFF"
+                                    ],
+                                    "sources": [
+                                        {
+                                            "type": "git",
+                                            "url": "https://github.com/aous72/OpenJPH.git",
+                                            "tag": "0.22.0"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "lerc",
+                            "buildsystem": "cmake-ninja",
+                            "sources": [
+                                {
+                                    "type": "git",
+                                    "url": "https://github.com/Esri/lerc.git",
+                                    "tag": "v4.2.0",
+                                    "x-checker-data": {
+                                        "type": "git"
+                                    },
+                                    "commit": "e534980e11992cc5f11864b0dcff1af6a27cee0d"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "qca",
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DBUILD_TESTS=OFF",
+                        "-DBUILD_WITH_QT6=ON"
+                    ],
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://download.kde.org/stable/qca/2.3.10/qca-2.3.10.tar.xz",
+                            "sha256": "1c5b722da93d559365719226bb121c726ec3c0dc4c67dea34f1e50e4e0d14a02",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 13606,
+                                "stable-only": true,
+                                "url-template": "https://download.kde.org/stable/qca/$version/qca-$version.tar.xz"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "qwt",
+                    "buildsystem": "qmake",
+                    "config-opts": [
+                        "-after",
+                        "QWT_INSTALL_PREFIX=/app"
+                    ],
+                    "cleanup": [
+                        "/doc",
+                        "/features",
+                        "/plugins",
+                        "/include",
+                        "/lib/pkgconfig"
+                    ],
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://sourceforge.net/projects/qwt/files/qwt/6.3.0/qwt-6.3.0.tar.bz2",
+                            "sha256": "dcb085896c28aaec5518cbc08c0ee2b4e60ada7ac929d82639f6189851a6129a",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 4147,
+                                "stable-only": true,
+                                "url-template": "https://sourceforge.net/projects/qwt/files/qwt/$version/qwt-$version.tar.bz2"
+                            }
+                        },
+                        {
+                            "type": "shell",
+                            "commands": [
+                                "sed 's/QWT_INSTALL_PREFIX\\s*=\\s*\\/usr\\/local\\/qwt-$$QWT_VERSION/QWT_INSTALL_PREFIX=\\/app/g' -i qwtconfig.pri",
+                                "sed 's/#QWT_CONFIG\\s*+=\\s*QwtPkgConfig/QWT_CONFIG+=QwtPkgConfig/g' -i qwtconfig.pri"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "libzip",
+                    "buildsystem": "cmake-ninja",
+                    "cleanup": [
+                        "/bin",
+                        "/include",
+                        "/lib/pkgconfig",
+                        "/share/man",
+                        "/lib/*.la"
+                    ],
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://libzip.org/download/libzip-1.11.4.tar.xz",
+                            "sha256": "8a247f57d1e3e6f6d11413b12a6f28a9d388de110adc0ec608d893180ed7097b",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 10649,
+                                "stable-only": true,
+                                "url-template": "https://libzip.org/download/libzip-$version.tar.xz"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "gsl",
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://ftp.gnu.org/gnu/gsl/gsl-2.8.tar.gz",
+                            "sha256": "6a99eeed15632c6354895b1dd542ed5a855c0f15d9ad1326c6fe2b2c9e423190",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 1267,
+                                "stable-only": true,
+                                "url-template": "https://ftp.gnu.org/gnu/gsl/gsl-$version.tar.gz"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "qscintilla",
+                    "buildsystem": "simple",
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://www.riverbankcomputing.com/static/Downloads/QScintilla/2.14.1/QScintilla_src-2.14.1.tar.gz",
+                            "sha256": "dfe13c6acc9d85dfcba76ccc8061e71a223957a6c02f3c343b30a9d43a4cdd4d"
+                        }
+                    ],
+                    "build-commands": [
+                        "sed -e 's|\\(target.path\\) = .*|\\1 = /app/lib|' -i src/qscintilla.pro",
+                        "sed -e 's|\\(header.path\\) = .*|\\1 = /app/include|' -i src/qscintilla.pro",
+                        "sed -e 's|\\(trans.path\\) = .*|\\1 = /app/share/qt/translations|' -i src/qscintilla.pro",
+                        "sed -e 's|\\(qsci.path\\) = .*|\\1 = /app/share/qt|' -i src/qscintilla.pro",
+                        "sed -e 's|\\(features.path\\) = .*|\\1 = /app/lib/qt/mkspecs/features|' -i src/qscintilla.pro",
+                        "cd src/ && QMAKEFEATURES=$PWD/src/features/ qmake && qmake -set prefix /app && make -j ${FLATPAK_BUILDER_N_JOBS:-`nproc`} && PREFIX=/app DESTDIR=/banana make install",
+                        "cd Python && mv pyproject{-qt5,}.toml && sip-build --no-make --qsci-features-dir ../src/features --qsci-include-dir ../src --qsci-library-dir ../src --api-dir /app/share/qt/qsci/api/python --target-dir=/app/lib/python3.13/site-packages && make -C build -j ${FLATPAK_BUILDER_N_JOBS:-`nproc`} && make -C build install"
+                    ]
+                },
+                {
+                    "name": "python-setuptools",
+                    "buildsystem": "simple",
+                    "build-commands": [
+                        "python3 setup.py build",
+                        "python3 setup.py install --prefix=/app --root=/ --optimize=1"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/pypa/setuptools.git",
+                            "tag": "v83.0.0",
+                            "x-checker-data": {
+                                "type": "git"
+                            },
+                            "commit": "6519f728c6f23c992df81a5691ef7655184a20eb"
+                        }
+                    ]
+                },
+                {
+                    "name": "python-six",
+                    "buildsystem": "simple",
+                    "build-commands": [
+                        "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} --no-build-isolation six"
+                    ],
+                    "sources": [
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz",
+                            "sha256": "ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "six"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "python-future",
+                    "buildsystem": "simple",
+                    "build-commands": [
+                        "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} --no-build-isolation future"
+                    ],
+                    "sources": [
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/a7/b2/4140c69c6a66432916b26158687e821ba631a4c9273c474343badf84d3ba/future-1.0.0.tar.gz",
+                            "sha256": "bd2968309307861edae1458a4f8a4f3598c03be43b97521076aebf5d94c07b05",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "future"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "pyproj",
+                    "buildsystem": "simple",
+                    "build-commands": [
+                        "python3 setup.py build",
+                        "python3 setup.py install --prefix=/app --root=/ --optimize=1"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/pyproj4/pyproj.git",
+                            "tag": "3.7.2",
+                            "x-checker-data": {
+                                "type": "git"
+                            },
+                            "commit": "f16037d2c45c3274ef28b828998267c3390393c8"
+                        }
+                    ]
+                },
+                {
+                    "name": "PyYAML",
+                    "buildsystem": "simple",
+                    "build-commands": [
+                        "python3 setup.py install --prefix=/app --root=/"
+                    ],
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz",
+                            "sha256": "d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "PyYAML",
+                                "packagetype": "sdist"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "python-owslib",
+                    "buildsystem": "simple",
+                    "build-commands": [
+                        "pip3 install --prefix=/app *dateutil-*",
+                        "pip3 install --prefix=/app --no-build-isolation pytz-*",
+                        "pip3 install --prefix=/app pathspec-*",
+                        "pip3 install --prefix=/app editables-*",
+                        "pip3 install --prefix=/app pluggy-*",
+                        "pip3 install --prefix=/app trove_classifiers-*",
+                        "pip3 install --prefix=/app hatchling-*",
+                        "pip3 install --prefix=/app urllib3-*",
+                        "pip3 install --prefix=/app idna-*",
+                        "pip3 install --prefix=/app --no-build-isolation certifi-*",
+                        "pip3 install --prefix=/app charset_normalizer-*",
+                        "pip3 install --prefix=/app requests-*",
+                        "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"lxml\" --no-build-isolation",
+                        "pip3 install --prefix=/app --no-build-isolation owslib*"
+                    ],
+                    "sources": [
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+                            "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "python-dateutil",
+                                "packagetype": "bdist_wheel"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/fb/48/fb042503b6ca6cd271261dc559fd6432f7d8c713153e9ec5c591af4dfc1c/pytz-2026.3.post1.tar.gz",
+                            "sha256": "2211d3fcf9a797d3405cac96ac7f61d80e6a644f72a3309607282fe8a2010c5d",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "pytz"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/a3/c2/24167ea9858356b47a87a50d39908bfdb72ceeefe0041586e704e5376b3a/certifi-2026.7.22.tar.gz",
+                            "sha256": "741e2c3b351ddf169a738da9f2c048608ff7f2c5cc02f1ebc6b118bb090d5d55",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "certifi"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/1e/5e/d4e9f1a599fb8e573b7b87160658329fbf28d19eac2718f51fc3def3aa5a/idna-3.18-py3-none-any.whl",
+                            "sha256": "7f952cbe720b688055e3f87de14f5c3e5fdaa8bc3928985c4077ca689de849a2",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "idna",
+                                "packagetype": "bdist_wheel"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/98/2b/f97f1c193fb855c345d678f5077d6926034db0722df74c8f057020e05a25/charset_normalizer-3.4.9-py3-none-any.whl",
+                            "sha256": "68e5f26a1ad57ded6d1cfb85331d1c1a195314756471d97758c48498bb4dcdf5",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "charset-normalizer",
+                                "packagetype": "bdist_wheel"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/cc/0e/d095533037fc9468f947b19f2da53f869804632b508808de41e86e801797/editables-0.6-py3-none-any.whl",
+                            "sha256": "d70e4698078a1d033e7786d9c64e5be070d058a67c21417024d38a58ac20aa43",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "editables",
+                                "packagetype": "bdist_wheel"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/54/20/4d324d65cc6d9205fabedc306948156824eb9f0ee1633355a8f7ec5c66bf/pluggy-1.6.0-py3-none-any.whl",
+                            "sha256": "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "pluggy",
+                                "packagetype": "bdist_wheel"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/7c/a4/81502f486f01db95bc8320646a8a12511f5e556cb63d5e224d91816605c4/trove_classifiers-2026.6.1.19-py3-none-any.whl",
+                            "sha256": "ab4c4ec93cc4a4e7815fa759906e05e6bb3f2fbd92ea0f897288c6a43efd15b3",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "trove-classifiers",
+                                "packagetype": "bdist_wheel"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/64/e2/2c0af0a52d16be74a4f194564fcdc417521ed863e9b65e4bc9052dacba6f/hatchling-1.31.0-py3-none-any.whl",
+                            "sha256": "aac80bec8b6fe35e8480f1c335be8910fa210a0e6f735a139be205dadcacb544",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "hatchling",
+                                "packagetype": "bdist_wheel"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/f1/d9/7fb5aa316bc299258e68c73ba3bddbc499654a07f151cba08f6153988714/pathspec-1.1.1-py3-none-any.whl",
+                            "sha256": "a00ce642f577bf7f473932318056212bc4f8bfdf53128c78bbd5af0b9b20b189",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "pathspec",
+                                "packagetype": "bdist_wheel"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/7f/3e/5db95bcf282c52709639744ca2a8b149baccf648e39c8cc87553df9eae0c/urllib3-2.7.0-py3-none-any.whl",
+                            "sha256": "9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "urllib3",
+                                "packagetype": "bdist_wheel"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl",
+                            "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "requests",
+                                "packagetype": "bdist_wheel"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/05/3b/aab6728cae887456f409b4d75e8a01856e4f04bd510de38052a47768b680/lxml-6.1.1.tar.gz",
+                            "sha256": "ba96ae44888e0185281e937633a743ea90d5a196c6000f82565ebb0580012d40",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "lxml"
+                            }
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/10/5d/f2b14a61454bc290c48786c1521f7c9e60996cb0d207b544feb722c82dee/owslib-0.36.0.tar.gz",
+                            "sha256": "b1ea352ee84f37a1a8ae44122b13cbd3b5b7bf9af0f74d84fe9ed7d9613b9543",
+                            "dest-filename": "owslib.tar.gz",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "OWSLib"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "python-psycopg2",
+                    "buildsystem": "simple",
+                    "build-commands": [
+                        "python3 setup.py build",
+                        "python3 setup.py install --prefix=/app --root=/ --optimize=1"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/psycopg/psycopg2.git",
+                            "tag": "2.9.12",
+                            "x-checker-data": {
+                                "type": "git"
+                            },
+                            "commit": "3a6d9d6ddc6b53eaa80b712f5fa6b23abbdc38db"
+                        }
+                    ]
+                },
+                {
+                    "name": "python3-markupsafe",
+                    "buildsystem": "simple",
+                    "ensure-writable": [
+                        "/lib/python*/site-packages/easy-install.pth"
+                    ],
+                    "sources": [
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/7e/99/7690b6d4034fffd95959cbe0c02de8deb3098cc577c67bb6a24fe5d7caa7/markupsafe-3.0.3.tar.gz",
+                            "sha256": "722695808f4b6457b320fdc131280796bdceb04ab50fe1795cd540799ebe1698",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "MarkupSafe"
+                            }
+                        }
+                    ],
+                    "build-commands": [
+                        "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"MarkupSafe\" --no-build-isolation"
+                    ]
+                },
+                {
+                    "name": "python3-jinja2",
+                    "buildsystem": "simple",
+                    "build-commands": [
+                        "pip3 install --prefix=/app jinja2-*"
+                    ],
+                    "sources": [
+                        {
+                            "type": "file",
+                            "url": "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl",
+                            "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67",
+                            "x-checker-data": {
+                                "type": "pypi",
+                                "name": "Jinja2",
+                                "packagetype": "bdist_wheel"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "exiv2",
+                    "cleanup": [
+                        "/bin"
+                    ],
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DCMAKE_BUILD_TYPE=Release",
+                        "-DEXIV2_BUILD_EXIV2_COMMAND=OFF",
+                        "-DEXIV2_BUILD_SAMPLES=OFF",
+                        "-DEXIV2_ENABLE_INIH=OFF"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/Exiv2/exiv2.git",
+                            "tag": "v0.28.8",
+                            "x-checker-data": {
+                                "type": "git"
+                            },
+                            "commit": "2cd987a731236037b6b78cbff897d08685a8ef49"
+                        }
+                    ]
+                },
+                {
+                    "name": "protobuf",
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+                        "-Dprotobuf_ABSL_PROVIDER=package",
+                        "-Dprotobuf_BUILD_SHARED_LIBS=ON",
+                        "-Dprotobuf_BUILD_TESTS=OFF"
+                    ],
+                    "cleanup": [
+                        "/bin/protoc*",
+                        "/lib/libprotoc*"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/protocolbuffers/protobuf.git",
+                            "tag": "v35.1",
+                            "commit": "35cd01f9fe9afbeea38cc7b979a3b6bfcde82c03",
+                            "x-checker-data": {
+                                "type": "git"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "qtkeychain",
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DBUILD_WITH_QT6=ON",
+                        "-DCMAKE_INSTALL_LIBDIR=/app/lib",
+                        "-DLIB_INSTALL_DIR=/app/lib",
+                        "-DBUILD_TRANSLATIONS=NO"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/frankosterfeld/qtkeychain/",
+                            "tag": "0.17.0",
+                            "x-checker-data": {
+                                "type": "git"
+                            },
+                            "commit": "875f77d9f61bd97fd84cca47ce3bc71186dfbd09"
+                        }
+                    ]
+                },
+                {
+                    "name": "Draco",
+                    "buildsystem": "cmake-ninja",
+                    "builddir": true,
+                    "build-options": {
+                        "cflags": "-fPIC",
+                        "cxxflags": "-fPIC"
+                    },
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://github.com/google/draco/archive/refs/tags/1.5.7.tar.gz",
+                            "sha256": "bf6b105b79223eab2b86795363dfe5e5356050006a96521477973aba8f036fe1",
+                            "x-checker-data": {
+                                "type": "anitya",
+                                "project-id": 322269,
+                                "stable-only": true,
+                                "url-template": "https://github.com/google/draco/archive/refs/tags/$version.tar.gz"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "geographiclib",
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DCMAKE_BUILD_TYPE=Release"
+                    ],
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://github.com/geographiclib/geographiclib/archive/refs/tags/v2.7.tar.gz",
+                            "sha256": "78d77cc8216843b78d14b41970ed9de3dedc34b9cd50ad84af2849c63a41eff8"
+                        }
+                    ]
+                }
             ]
         },
         {
@@ -108,6 +1510,12 @@
                 "install -D -m644 nz.govt.linz.qgis.svg /app/share/icons/hicolor/scalable/apps/nz.govt.linz.qgis.svg"
             ]
         },
-        "modules/env-python.json"
+        {
+            "name": "env-python",
+            "buildsystem": "simple",
+            "build-commands": [
+                "ln -s /usr/bin/python3 /app/bin/python"
+            ]
+        }
     ]
 }
