@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Fix Git Trust
         run: git config --global --add safe.directory '/__w/qgis-flatpak/*'
@@ -137,7 +137,7 @@ jobs:
     runs-on: ubuntu-latest_64core
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
