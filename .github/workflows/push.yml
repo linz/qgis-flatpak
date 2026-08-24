@@ -124,7 +124,7 @@ jobs:
           tar -czf qgis-runtime.tar.gz -C build-dir/files .
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.bundle_info.outputs.build_id }}
           path: |
