@@ -19,7 +19,7 @@
     "separate-locales": false,
     "build-options": {
         "env": {
-            "PYTHONPATH": "/app/lib/python3.12/site-packages:/usr/lib/python3.12/site-packages"
+            "PYTHONPATH": "/app/lib/python3.13/site-packages:/usr/lib/python3.13/site-packages"
         }
     },
     "cleanup": [
@@ -49,12 +49,12 @@
                 "-DBUILD_WITH_QT6=TRUE",
                 "-DENABLE_TESTS=FALSE",
                 "-DWITH_3D=FALSE",
+                "-DGRASS_PREFIX8=/app/grass84",
                 "-DQWT_LIBRARY=/app/lib/libqwt.so",
                 "-DSQLITE3_INCLUDE_DIR=/app/include",
                 "-DSQLITE3_LIBRARY=/app/lib/libsqlite3.so",
                 "-DUSE_OPENCL=ON",
-                "-DWITH_QUICK=OFF",
-                "-DWITH_GEOGRAPHICLIB=TRUE",
+                "-DWITH_QUICK=ON",
                 "-DWITH_PDAL=FALSE",
                 "-DWITH_QTWEBKIT=FALSE",
                 "-DWITH_QTWEBENGINE=OFF",
@@ -341,27 +341,6 @@
                                 "project-id": 7344,
                                 "stable-only": true,
                                 "url-template": "http://www.unixodbc.org/unixODBC-$version.tar.gz"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "zstd",
-                    "buildsystem": "cmake-ninja",
-                    "config-opts": [
-                        "-DCMAKE_BUILD_TYPE=Release"
-                    ],
-                    "subdir": "build/cmake",
-                    "sources": [
-                        {
-                            "type": "archive",
-                            "url": "https://github.com/facebook/zstd/releases/download/v1.5.7/zstd-1.5.7.tar.gz",
-                            "sha256": "eb33e51f49a15e023950cd7825ca74a4a2b43db8354825ac24fc1b7ee09e6fa3",
-                            "x-checker-data": {
-                                "type": "anitya",
-                                "project-id": 12083,
-                                "url-template": "https://github.com/facebook/zstd/releases/download/v$version/zstd-$version.tar.gz",
-                                "stable-only": true
                             }
                         }
                     ]
@@ -1078,25 +1057,6 @@
                     ]
                 },
                 {
-                    "name": "python-setuptools",
-                    "buildsystem": "simple",
-                    "build-commands": [
-                        "python3 setup.py build",
-                        "python3 setup.py install --prefix=/app --root=/ --optimize=1"
-                    ],
-                    "sources": [
-                        {
-                            "type": "git",
-                            "url": "https://github.com/pypa/setuptools.git",
-                            "tag": "v83.0.0",
-                            "x-checker-data": {
-                                "type": "git"
-                            },
-                            "commit": "6519f728c6f23c992df81a5691ef7655184a20eb"
-                        }
-                    ]
-                },
-                {
                     "name": "python-six",
                     "buildsystem": "simple",
                     "build-commands": [
@@ -1129,6 +1089,25 @@
                                 "type": "pypi",
                                 "name": "future"
                             }
+                        }
+                    ]
+                },
+                {
+                    "name": "python-setuptools",
+                    "buildsystem": "simple",
+                    "build-commands": [
+                        "python3 setup.py build",
+                        "python3 setup.py install --prefix=/app --root=/ --optimize=1"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/pypa/setuptools.git",
+                            "tag": "v83.0.0",
+                            "x-checker-data": {
+                                "type": "git"
+                            },
+                            "commit": "6519f728c6f23c992df81a5691ef7655184a20eb"
                         }
                     ]
                 },
@@ -1349,6 +1328,41 @@
                     ]
                 },
                 {
+                    "name": "gisgrass",
+                    "cleanup": [
+                        "/include",
+                        "/lib/pkgconfig",
+                        "/share/man",
+                        "/lib/*.la"
+                    ],
+                    "config-opts": [
+                        "--prefix=/app",
+                        "--with-freetype-includes=/usr/include/freetype2",
+                        "--with-readline",
+                        "--with-pthread",
+                        "--with-nls",
+                        "--with-geos",
+                        "--with-sqlite=yes",
+                        "--with-python=yes",
+                        "--with-postgres"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/OSGeo/grass.git",
+                            "tag": "8.5.0",
+                            "x-checker-data": {
+                                "type": "git",
+                                "tag-pattern": "^([0-9.]+)$"
+                            },
+                            "commit": "8d6ceba290a2f0059a7301b9d4944455f313da72"
+                        }
+                    ],
+                    "modules": [
+                        "shared-modules/glu/glu-9.json"
+                    ]
+                },
+                {
                     "name": "python3-markupsafe",
                     "buildsystem": "simple",
                     "ensure-writable": [
@@ -1477,20 +1491,6 @@
                                 "stable-only": true,
                                 "url-template": "https://github.com/google/draco/archive/refs/tags/$version.tar.gz"
                             }
-                        }
-                    ]
-                },
-                {
-                    "name": "geographiclib",
-                    "buildsystem": "cmake-ninja",
-                    "config-opts": [
-                        "-DCMAKE_BUILD_TYPE=Release"
-                    ],
-                    "sources": [
-                        {
-                            "type": "archive",
-                            "url": "https://github.com/geographiclib/geographiclib/archive/refs/tags/v2.7.tar.gz",
-                            "sha256": "78d77cc8216843b78d14b41970ed9de3dedc34b9cd50ad84af2849c63a41eff8"
                         }
                     ]
                 }
