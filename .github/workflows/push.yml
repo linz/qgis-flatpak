@@ -44,11 +44,18 @@ jobs:
 
       - name: Bundle info
         run: |
-          QGIS_COMMIT=$(jq -r '.modules[] | select(objects | .name == "qgis") | .sources[0].commit' nz.govt.linz.qgis.json)
+          QGIS_VERSION=$(jq -r '.modules[] | select(objects | .name == "qgis") | .sources[0]["//"] // empty' nz.govt.linz.qgis.json)
+          QGIS_COMMIT=$(jq -r '.modules[] | select(objects | .name == "qgis") | .sources[0].commit // empty' nz.govt.linz.qgis.json)
           SHORT_QGIS=${QGIS_COMMIT:0:6}
           CURRENT_COMMIT=$(git rev-parse --short=6 HEAD)
           BUILD_ID=${{github.run_number}}
-          ID="linz-qgis_${SHORT_QGIS}-${CURRENT_COMMIT}_build-${BUILD_ID}"
+          if [ -n "$QGIS_VERSION" ] && [ -n "$SHORT_QGIS" ]; then
+            ID="linz-qgis_${QGIS_VERSION}_${SHORT_QGIS}-${CURRENT_COMMIT}_build-${BUILD_ID}"
+          elif [ -n "$QGIS_VERSION" ]; then
+            ID="linz-qgis_${QGIS_VERSION}-${CURRENT_COMMIT}_build-${BUILD_ID}"
+          else
+            ID="linz-qgis_${SHORT_QGIS}-${CURRENT_COMMIT}_build-${BUILD_ID}"
+          fi
           echo "build_id=${ID}" >> $GITHUB_OUTPUT
         id: bundle_info
 
@@ -112,7 +119,7 @@ jobs:
 
       - name: Archive build files
         run: |
-          RUNTIME_PATH=$(flatpak info -l org.kde.Platform//6.10 --user)
+          RUNTIME_PATH=$(flatpak info -l org.kde.Platform//$(jq -r '."runtime-version"' nz.govt.linz.qgis.json) --user)
 
           # Prepare KDE Platform Archive
           # We need to chmod it because flatpak runtimes are usually read-only
