@@ -55,6 +55,7 @@
                 "-DSQLITE3_LIBRARY=/app/lib/libsqlite3.so",
                 "-DUSE_OPENCL=ON",
                 "-DWITH_QUICK=ON",
+                "-DWITH_GEOGRAPHICLIB=TRUE",
                 "-DWITH_PDAL=FALSE",
                 "-DWITH_QTWEBKIT=FALSE",
                 "-DWITH_QTWEBENGINE=OFF",
@@ -1503,6 +1504,20 @@
                                 "stable-only": true,
                                 "url-template": "https://github.com/google/draco/archive/refs/tags/$version.tar.gz"
                             }
+                        }
+                    ]
+                },
+                {
+                    "name": "geographiclib",
+                    "buildsystem": "cmake-ninja",
+                    "config-opts": [
+                        "-DCMAKE_BUILD_TYPE=Release"
+                    ],
+                    "sources": [
+                        {
+                            "type": "archive",
+                            "url": "https://github.com/geographiclib/geographiclib/archive/refs/tags/v2.7.tar.gz",
+                            "sha256": "78d77cc8216843b78d14b41970ed9de3dedc34b9cd50ad84af2849c63a41eff8"
                         }
                     ]
                 }
