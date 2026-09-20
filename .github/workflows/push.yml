@@ -167,7 +167,7 @@ jobs:
           rm -fr build-dir/files/sbin # why is this a link
 
       - name: Log in to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
