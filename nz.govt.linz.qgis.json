@@ -361,7 +361,7 @@
                         "-DGDAL_USE_CRYPTOPP=ON",
                         "-DGDAL_USE_DEFLATE=ON",
                         "-DGDAL_USE_FREEXL=ON",
-                        "-DGDAL_USE_GEOTIFF=ON",
+                        "-DGDAL_USE_GEOTIFF_INTERNAL=ON",
                         "-DGDAL_USE_GEOS=ON",
                         "-DGDAL_USE_GIF=ON",
                         "-DGDAL_USE_HEIF=ON",
@@ -389,7 +389,7 @@
                         "-DGDAL_USE_QHULL=ON",
                         "-DGDAL_USE_SPATIALITE=ON",
                         "-DGDAL_USE_SQLITE3=ON",
-                        "-DGDAL_USE_TIFF=ON",
+                        "-DGDAL_USE_TIFF_INTERNAL=ON",
                         "-DGDAL_USE_WEBP=ON",
                         "-DGDAL_USE_XERCESC=ON",
                         "-DGDAL_USE_ZLIB=ON",
@@ -793,26 +793,6 @@
                                         "type": "git"
                                     },
                                     "commit": "92e6a0db9fa848d742f9eb286c92afc60f2c3dda"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "libgeotiff",
-                            "config-opts": [
-                                "--with-jpeg=yes",
-                                "--with-zlib=yes"
-                            ],
-                            "sources": [
-                                {
-                                    "type": "archive",
-                                    "url": "https://github.com/OSGeo/libgeotiff/releases/download/1.7.4/libgeotiff-1.7.4.tar.gz",
-                                    "sha256": "c598d04fdf2ba25c4352844dafa81dde3f7fd968daa7ad131228cd91e9d3dc47",
-                                    "x-checker-data": {
-                                        "type": "anitya",
-                                        "project-id": 21361,
-                                        "url-template": "https://github.com/OSGeo/libgeotiff/releases/download/$version/libgeotiff-$version.tar.gz",
-                                        "stable-only": true
-                                    }
                                 }
                             ]
                         },
